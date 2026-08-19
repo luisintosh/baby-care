@@ -18,7 +18,7 @@ type AppShellProps = {
 export function AppShell({ caregiver, onChangeUser }: AppShellProps) {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
-      <header className="flex items-center justify-between px-5 pt-5 pb-3">
+      <header className="flex items-center justify-between px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pb-3">
         <div>
           <p className="text-[0.7rem] tracking-[0.28em] text-lamp uppercase">Cuna</p>
           <h1 className="font-heading text-xl">Seguimiento</h1>
