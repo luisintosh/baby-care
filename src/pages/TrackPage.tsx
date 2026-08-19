@@ -93,6 +93,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         live={clock.live}
         onShift={clock.shift}
         onNow={clock.resetToNow}
+        onChange={clock.setValue}
       />
       <ActionPad
         onSelect={handleSelect}

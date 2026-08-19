@@ -77,12 +77,14 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
             value={start}
             onShift={(minutes) => setStart(addMinutes(start, minutes))}
             onNow={() => setStart(new Date())}
+            onChange={setStart}
           />
           <TimeAdjuster
             label="Despertar"
             value={end ?? new Date()}
             onShift={(minutes) => setEnd(addMinutes(end ?? new Date(), minutes))}
             onNow={() => setEnd(new Date())}
+            onChange={setEnd}
           />
         </div>
         <SheetFooter className="gap-2">

@@ -2,6 +2,12 @@ export function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60_000)
 }
 
+export function withTime(date: Date, hours: number, minutes: number) {
+  const next = new Date(date)
+  next.setHours(hours, minutes, 0, 0)
+  return next
+}
+
 export function addDays(date: Date, days: number) {
   const next = new Date(date)
   next.setDate(next.getDate() + days)

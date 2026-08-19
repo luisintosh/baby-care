@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { addMinutes } from '@/lib/format'
+import { addDays, addMinutes } from '@/lib/format'
 
 export function useSelectedTime() {
   const [live, setLive] = useState(true)
@@ -26,7 +26,9 @@ export function useSelectedTime() {
   }
 
   function setValue(next: Date) {
-    setFrozen(next)
+    const now = new Date()
+    const chosen = next.getTime() > now.getTime() + 10 * 60_000 ? addDays(next, -1) : next
+    setFrozen(chosen)
     setLive(false)
   }
 
