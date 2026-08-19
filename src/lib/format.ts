@@ -56,7 +56,12 @@ export function formatDuration(ms: number) {
 export function formatAgo(from: Date, now = new Date()) {
   const ms = now.getTime() - from.getTime()
   if (ms < 60_000) return 'hace un momento'
-  return `hace ${formatDuration(ms)}`
+  const minutes = Math.floor(ms / 60_000)
+  if (minutes < 60) return `hace ${minutes} min`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return hours === 1 ? 'hace 1hr' : `hace ${hours}hrs`
+  const days = Math.floor(hours / 24)
+  return days === 1 ? 'hace 1 día' : `hace ${days} días`
 }
 
 export function toDateInput(date: Date) {

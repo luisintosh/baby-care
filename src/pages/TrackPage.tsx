@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
 import { ReminderBanner } from '@/components/ReminderBanner'
@@ -33,6 +33,17 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
   const [deleting, setDeleting] = useState<BabyEvent | null>(null)
+
+  const lastAtByKind = useMemo(() => {
+    const last: Partial<Record<EventKind, Date>> = {}
+    for (const event of eventsApi.events) {
+      if (last[event.kind]) continue
+      last[event.kind] = new Date(
+        event.kind === 'sleep' && event.ended_at ? event.ended_at : event.occurred_at,
+      )
+    }
+    return last
+  }, [eventsApi.events])
 
   async function logKind(kind: EventKind, extraNote?: string | null) {
     try {
@@ -98,6 +109,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
       <ActionPad
         onSelect={handleSelect}
         openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
+        lastAtByKind={lastAtByKind}
       />
       {eventsApi.error ? (
         <p className="text-sm text-destructive">{eventsApi.error}</p>

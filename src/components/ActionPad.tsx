@@ -1,25 +1,27 @@
 import { KINDS } from '@/lib/kinds'
-import { formatClock } from '@/lib/format'
+import { formatAgo, formatClock } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { EventKind } from '@/lib/types'
 
 type ActionPadProps = {
   onSelect: (kind: EventKind) => void
   openSleepSince: Date | null
+  lastAtByKind: Partial<Record<EventKind, Date>>
 }
 
-export function ActionPad({ onSelect, openSleepSince }: ActionPadProps) {
+export function ActionPad({ onSelect, openSleepSince, lastAtByKind }: ActionPadProps) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {KINDS.map((kind) => {
         const sleeping = kind.id === 'sleep' && openSleepSince
+        const lastAt = lastAtByKind[kind.id]
         return (
           <button
             key={kind.id}
             type="button"
             onClick={() => onSelect(kind.id)}
             className={cn(
-              'pad-glow flex min-h-28 flex-col items-center justify-center gap-2 rounded-[1.75rem] bg-card px-3 py-4 text-center ring-1 ring-white/8 transition active:translate-y-px',
+              'pad-glow flex min-h-28 flex-col items-center justify-center gap-1.5 rounded-[1.75rem] bg-card px-3 py-4 text-center ring-1 ring-white/8 transition active:translate-y-px',
               sleeping && 'is-sleeping ring-lamp/50',
             )}
           >
@@ -29,6 +31,9 @@ export function ActionPad({ onSelect, openSleepSince }: ActionPadProps) {
             <span className="text-sm font-medium">
               {sleeping ? `Durmiendo desde ${formatClock(openSleepSince)}` : kind.label}
             </span>
+            {lastAt ? (
+              <span className="text-[11px] leading-none text-muted-foreground">{formatAgo(lastAt)}</span>
+            ) : null}
           </button>
         )
       })}
