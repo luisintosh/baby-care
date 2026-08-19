@@ -5,7 +5,7 @@ import sharp from 'sharp'
 const root = path.resolve(import.meta.dirname, '..')
 const svgPath = path.join(root, 'public/logo.svg')
 const outDir = path.join(root, 'public')
-const background = '#1c1612'
+const background = '#ffffff'
 
 await mkdir(outDir, { recursive: true })
 
