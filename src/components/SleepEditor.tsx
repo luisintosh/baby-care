@@ -10,7 +10,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { TimeAdjuster } from '@/components/TimeAdjuster'
-import { addMinutes } from '@/lib/format'
+import { addDays, addMinutes, startOfLocalDay } from '@/lib/format'
 import type { BabyEvent } from '@/lib/types'
 
 type SleepEditorProps = {
@@ -24,12 +24,19 @@ type SleepEditorProps = {
 export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: SleepEditorProps) {
   const [start, setStart] = useState(() => new Date())
   const [end, setEnd] = useState<Date | null>(null)
+  const [endDayOffset, setEndDayOffset] = useState(0)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (!event) return
-    setStart(new Date(event.occurred_at))
-    setEnd(event.ended_at ? new Date(event.ended_at) : new Date())
+    const eventStart = new Date(event.occurred_at)
+    const eventEnd = event.ended_at ? new Date(event.ended_at) : new Date()
+    setStart(eventStart)
+    setEnd(eventEnd)
+    const dayDiff = Math.round(
+      (startOfLocalDay(eventEnd).getTime() - startOfLocalDay(eventStart).getTime()) / 86_400_000,
+    )
+    setEndDayOffset(dayDiff)
   }, [event])
 
   if (!event) return null
@@ -64,6 +71,18 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
     }
   }
 
+  function shiftEndDay(delta: number) {
+    const next = endDayOffset + delta
+    setEndDayOffset(next)
+    if (end) {
+      setEnd(addDays(end, delta))
+    }
+  }
+
+  function setEndWithOffset(date: Date) {
+    setEnd(addDays(date, endDayOffset))
+  }
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="max-h-[92dvh] overflow-y-auto rounded-t-3xl">
@@ -81,11 +100,36 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
           />
           <TimeAdjuster
             label="Despertar"
-            value={end ?? new Date()}
-            onShift={(minutes) => setEnd(addMinutes(end ?? new Date(), minutes))}
+            value={end ?? addDays(start, endDayOffset)}
+            onShift={(minutes) => setEnd(addMinutes(end ?? addDays(start, endDayOffset), minutes))}
             onNow={() => setEnd(new Date())}
-            onChange={setEnd}
+            onChange={setEndWithOffset}
           />
+          <div className="flex items-center justify-center gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="h-9 rounded-xl text-xs"
+              disabled={endDayOffset <= 0}
+              onClick={() => shiftEndDay(-1)}
+            >
+              −1 día
+            </Button>
+            <span className="min-w-[4rem] text-center text-xs text-muted-foreground">
+              {endDayOffset === 0 ? 'Mismo día' : `+${endDayOffset} día${endDayOffset > 1 ? 's' : ''}`}
+            </span>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="h-9 rounded-xl text-xs"
+              disabled={endDayOffset >= 3}
+              onClick={() => shiftEndDay(1)}
+            >
+              +1 día
+            </Button>
+          </div>
         </div>
         <SheetFooter className="gap-2">
           <Button
