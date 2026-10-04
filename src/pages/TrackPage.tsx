@@ -89,6 +89,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
           )
         }}
       />
+      <FeedAlert caregiver={caregiver} events={eventsApi.events} />
       {eventsApi.error ? <p className="text-sm text-destructive">{eventsApi.error}</p> : null}
       <RecentLog
         events={eventsApi.events}
@@ -106,8 +107,6 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         onSelect={handleSelect}
         openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
       />
-      <FeedAlert caregiver={caregiver} events={eventsApi.events} />
-
       <EventDialogs
         eventsApi={eventsApi}
         sleepEvent={sleepEvent}

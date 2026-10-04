@@ -9,6 +9,7 @@ export const MAX_GAP_MS = 8 * 60 * 60 * 1000
 export const MIN_GAPS = 3
 export const DEFAULT_DAY_MS = 3 * 60 * 60 * 1000
 export const DEFAULT_NIGHT_MS = 4 * 60 * 60 * 1000
+export const PREP_BEFORE_MS = 15 * 60 * 1000
 export const FOLLOWUP_AFTER_MS = 30 * 60 * 1000
 
 export type FeedPeriod = 'day' | 'night'
@@ -125,15 +126,19 @@ export function dueFeedAlert(
   state: FeedAlertState,
   now = new Date(),
 ): FeedAlert | null {
-  if (!next || now.getTime() < next.dueAt.getTime()) return null
+  if (!next || now.getTime() < next.dueAt.getTime() - PREP_BEFORE_MS) return null
 
   const elapsed = formatDuration(now.getTime() - next.last.occurredAt.getTime())
   if (state.notifiedFeedId !== next.last.id) {
+    const early = now.getTime() < next.dueAt.getTime()
+    const clock = formatFeedClock(next.dueAt)
     return {
       kind: 'due',
       feedId: next.last.id,
-      title: 'Toca comida',
-      body: `Han pasado ${elapsed} desde la última. Ritmo de ${periodLabel(next.period)}: cada ${formatDuration(next.intervalMs)}.`,
+      title: early ? 'Prepara la comida' : 'Toca comida',
+      body: early
+        ? `Toca a las ${clock}, ritmo de ${periodLabel(next.period)}: cada ${formatDuration(next.intervalMs)}.`
+        : `Han pasado ${elapsed} desde la última. Ritmo de ${periodLabel(next.period)}: cada ${formatDuration(next.intervalMs)}.`,
       tag: 'feed-due',
     }
   }
