@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
+import { FeedAlert } from '@/components/FeedAlert'
 import { ReminderBanner } from '@/components/ReminderBanner'
 import { SleepEditor } from '@/components/SleepEditor'
 import { TimeAdjuster } from '@/components/TimeAdjuster'
@@ -111,6 +112,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
         lastAtByKind={lastAtByKind}
       />
+      <FeedAlert caregiver={caregiver} events={eventsApi.events} />
       {eventsApi.error ? (
         <p className="text-sm text-destructive">{eventsApi.error}</p>
       ) : (
