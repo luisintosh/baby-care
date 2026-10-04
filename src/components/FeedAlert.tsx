@@ -32,29 +32,29 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
   const canToggle = push.support === 'on' || push.support === 'off'
 
   return (
-    <section className="flex items-center gap-3 rounded-2xl bg-card px-3 py-3 ring-1 ring-white/8">
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium">
-          {prediction ? nextFeedLabel(prediction) : 'Cuando registres comidas, calculamos la próxima.'}
-        </p>
-        <p className="text-xs text-muted-foreground">{hintFor(push.support)}</p>
+    <section className="flex flex-col gap-2 rounded-[1.75rem] bg-card px-4 py-3">
+      <p className="text-sm font-medium">
+        {prediction ? nextFeedLabel(prediction) : 'Cuando registres comidas, calculamos la próxima.'}
+      </p>
+      <div className="flex items-center gap-3">
+        <p className="min-w-0 flex-1 text-xs text-muted-foreground">{hintFor(push.support)}</p>
+        {canToggle ? (
+          <Button
+            type="button"
+            variant={push.support === 'on' ? 'secondary' : 'default'}
+            className="h-11 shrink-0 rounded-xl px-3"
+            aria-pressed={push.support === 'on'}
+            disabled={push.busy}
+            onClick={() => {
+              void push.toggle().catch((error: unknown) => {
+                toast.error(error instanceof Error ? error.message : 'No se pudieron cambiar los avisos')
+              })
+            }}
+          >
+            {push.support === 'on' ? 'Avisos activos' : 'Activar avisos'}
+          </Button>
+        ) : null}
       </div>
-      {canToggle ? (
-        <Button
-          type="button"
-          variant={push.support === 'on' ? 'secondary' : 'default'}
-          className="h-11 rounded-xl px-3"
-          aria-pressed={push.support === 'on'}
-          disabled={push.busy}
-          onClick={() => {
-            void push.toggle().catch((error: unknown) => {
-              toast.error(error instanceof Error ? error.message : 'No se pudieron cambiar los avisos')
-            })
-          }}
-        >
-          {push.support === 'on' ? 'Avisos activos' : 'Activar avisos'}
-        </Button>
-      ) : null}
     </section>
   )
 }

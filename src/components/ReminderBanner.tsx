@@ -15,18 +15,18 @@ export function ReminderBanner({ reminders, onComplete }: ReminderBannerProps) {
       {reminders.map((reminder) => (
         <article
           key={reminder.id}
-          className="flex items-center gap-3 rounded-2xl bg-lamp/12 px-3 py-3 ring-1 ring-lamp/30"
+          className="flex items-center gap-3 rounded-[1.6rem] bg-lamp px-3 py-3 text-primary-foreground"
         >
           <div className="min-w-0 flex-1">
-            <p className="font-medium text-lamp-foreground">{reminder.title}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="font-medium">{reminder.title}</p>
+            <p className="text-xs text-primary-foreground/70">
               {formatRange(reminder.starts_on, reminder.ends_on)}
             </p>
           </div>
           <Button
             type="button"
             size="lg"
-            className="h-11 rounded-xl"
+            className="h-11 rounded-full bg-primary-foreground px-4 text-background hover:bg-primary-foreground/90"
             onClick={() => onComplete(reminder.id)}
           >
             Hecho

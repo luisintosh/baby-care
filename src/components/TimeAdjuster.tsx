@@ -21,6 +21,19 @@ type TimeAdjusterProps = {
   label?: string
 }
 
+function ShiftKey({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <Button
+      type="button"
+      variant="secondary"
+      className="h-11 rounded-2xl px-1 text-sm"
+      onClick={onClick}
+    >
+      {label}
+    </Button>
+  )
+}
+
 function pad2(n: number) {
   return String(n).padStart(2, '0')
 }
@@ -53,53 +66,34 @@ export function TimeAdjuster({
   }
 
   return (
-    <section className="rounded-3xl bg-card/80 px-4 py-4 ring-1 ring-white/8">
-      {label ? (
-        <p className="mb-2 text-center text-xs tracking-[0.2em] text-muted-foreground uppercase">
-          {label}
-        </p>
-      ) : null}
-      <div className="flex items-center justify-between gap-3">
-        <Button
-          type="button"
-          variant="secondary"
-          size="lg"
-          className="h-16 min-w-16 rounded-2xl text-lg"
-          onClick={() => onShift(-10)}
-        >
-          −10
-        </Button>
-        <button
-          type="button"
-          className="min-w-0 rounded-2xl px-2 py-1 text-center outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:bg-white/5"
-          onClick={openPicker}
-          aria-label={`Elegir hora, ${formatClock(value)}`}
-        >
-          <p className="font-clock text-4xl leading-none font-semibold tracking-tight text-lamp">
-            {formatClock(value)}
-          </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {live ? 'Hora actual · toca' : 'Hora elegida · toca'}
-          </p>
-        </button>
-        <Button
-          type="button"
-          variant="secondary"
-          size="lg"
-          className="h-16 min-w-16 rounded-2xl text-lg"
-          onClick={() => onShift(10)}
-        >
-          +10
-        </Button>
-      </div>
-      <Button
+    <section className="rounded-[1.75rem] bg-card px-4 py-5">
+      {label ? <p className="mb-2 text-center text-sm text-muted-foreground">{label}</p> : null}
+      <button
         type="button"
-        variant="ghost"
-        className={cn('mt-3 h-11 w-full rounded-2xl', live && 'text-lamp')}
-        onClick={onNow}
+        className="w-full rounded-2xl py-1 text-center outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:bg-white/5"
+        onClick={openPicker}
+        aria-label={`Elegir hora, ${formatClock(value)}`}
       >
-        Ahora
-      </Button>
+        <p className="font-clock text-5xl leading-none font-semibold tracking-tight text-lamp">
+          {formatClock(value)}
+        </p>
+      </button>
+      <div className="mt-4 grid grid-cols-4 gap-2">
+        <ShiftKey label="−1 h" onClick={() => onShift(-60)} />
+        <ShiftKey label="+1 h" onClick={() => onShift(60)} />
+        <ShiftKey label="−10" onClick={() => onShift(-10)} />
+        <ShiftKey label="+10" onClick={() => onShift(10)} />
+      </div>
+      {live ? null : (
+        <Button
+          type="button"
+          variant="ghost"
+          className={cn('mt-3 h-11 w-full rounded-2xl text-lamp')}
+          onClick={onNow}
+        >
+          Ahora
+        </Button>
+      )}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-xs">

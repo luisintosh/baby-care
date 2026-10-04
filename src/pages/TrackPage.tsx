@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
+import { EventDialogs } from '@/components/EventDialogs'
 import { FeedAlert } from '@/components/FeedAlert'
+import { RecentLog } from '@/components/RecentLog'
 import { ReminderBanner } from '@/components/ReminderBanner'
-import { SleepEditor } from '@/components/SleepEditor'
 import { TimeAdjuster } from '@/components/TimeAdjuster'
-import { Timeline } from '@/components/Timeline'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -34,17 +34,6 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
   const [deleting, setDeleting] = useState<BabyEvent | null>(null)
-
-  const lastAtByKind = useMemo(() => {
-    const last: Partial<Record<EventKind, Date>> = {}
-    for (const event of eventsApi.events) {
-      if (last[event.kind]) continue
-      last[event.kind] = new Date(
-        event.kind === 'sleep' && event.ended_at ? event.ended_at : event.occurred_at,
-      )
-    }
-    return last
-  }, [eventsApi.events])
 
   async function logKind(kind: EventKind, extraNote?: string | null) {
     try {
@@ -100,6 +89,12 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
           )
         }}
       />
+      {eventsApi.error ? <p className="text-sm text-destructive">{eventsApi.error}</p> : null}
+      <RecentLog
+        events={eventsApi.events}
+        loading={eventsApi.loading}
+        onSelect={handleTimelineSelect}
+      />
       <TimeAdjuster
         value={clock.value}
         live={clock.live}
@@ -110,31 +105,18 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
       <ActionPad
         onSelect={handleSelect}
         openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
-        lastAtByKind={lastAtByKind}
       />
       <FeedAlert caregiver={caregiver} events={eventsApi.events} />
-      {eventsApi.error ? (
-        <p className="text-sm text-destructive">{eventsApi.error}</p>
-      ) : (
-        <Timeline events={eventsApi.events} onSelect={handleTimelineSelect} />
-      )}
 
-      <SleepEditor
-        event={sleepEvent}
-        open={Boolean(sleepEvent)}
-        onOpenChange={(open) => {
+      <EventDialogs
+        eventsApi={eventsApi}
+        sleepEvent={sleepEvent}
+        deleting={deleting}
+        onSleepOpenChange={(open) => {
           if (!open) setSleepEvent(null)
         }}
-        onSave={async (id, occurredAt, endedAt) => {
-          await eventsApi.updateEvent(id, {
-            occurred_at: occurredAt.toISOString(),
-            ended_at: endedAt ? endedAt.toISOString() : null,
-          })
-          toast.success(endedAt ? 'Despertar registrado' : 'Sigue durmiendo')
-        }}
-        onDelete={async (id) => {
-          await eventsApi.deleteEvent(id)
-          toast.success('Sueño borrado')
+        onDeletingOpenChange={(open) => {
+          if (!open) setDeleting(null)
         }}
       />
 
@@ -164,38 +146,6 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
               }}
             >
               Registrar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        open={Boolean(deleting)}
-        onOpenChange={(open) => {
-          if (!open) setDeleting(null)
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>¿Borrar este registro?</DialogTitle>
-            <DialogDescription>
-              {deleting ? `${kindMeta(deleting.kind).past} no se podrá recuperar.` : ''}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="destructive"
-              className="h-11 rounded-xl"
-              onClick={() => {
-                if (!deleting) return
-                void eventsApi.deleteEvent(deleting.id).then(
-                  () => toast.success('Borrado'),
-                  (error: unknown) => toast.error(error instanceof Error ? error.message : 'No se pudo borrar'),
-                )
-                setDeleting(null)
-              }}
-            >
-              Borrar
             </Button>
           </DialogFooter>
         </DialogContent>

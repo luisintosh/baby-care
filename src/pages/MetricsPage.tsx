@@ -32,7 +32,7 @@ export function MetricsPage({ events, loading }: MetricsPageProps) {
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h2 className="mb-3 text-xs tracking-[0.22em] text-muted-foreground uppercase">Ahora</h2>
+        <h2 className="mb-3 text-sm text-muted-foreground">Ahora</h2>
         <div className="grid grid-cols-2 gap-2">
           <Stat emoji="🍼" label="Última comida" value={metrics.lastFeed ? formatAgo(metrics.lastFeed, now) : 'sin registro'} />
           <Stat emoji="💩" label="Última popó" value={metrics.lastPoop ? formatAgo(metrics.lastPoop, now) : 'sin registro'} />
@@ -57,7 +57,7 @@ export function MetricsPage({ events, loading }: MetricsPageProps) {
       </section>
 
       <section>
-        <h2 className="mb-3 text-xs tracking-[0.22em] text-muted-foreground uppercase">Hoy</h2>
+        <h2 className="mb-3 text-sm text-muted-foreground">Hoy</h2>
         <div className="grid grid-cols-2 gap-2">
           <Mini count={metrics.todayFeeds} label="comidas" />
           <Mini count={metrics.todayPoops} label="popós" />
@@ -67,9 +67,7 @@ export function MetricsPage({ events, loading }: MetricsPageProps) {
       </section>
 
       <section>
-        <h2 className="mb-3 text-xs tracking-[0.22em] text-muted-foreground uppercase">
-          Tendencia 7 días
-        </h2>
+        <h2 className="mb-3 text-sm text-muted-foreground">Tendencia 7 días</h2>
         {loading || !metrics.hasTrend ? (
           <p className="rounded-2xl bg-card/70 px-4 py-8 text-center text-sm text-muted-foreground">
             Registra unos días para ver cambios

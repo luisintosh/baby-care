@@ -23,7 +23,7 @@ export function Timeline({ events, onSelect }: TimelineProps) {
     <div className="flex flex-col gap-6">
       {groups.map((group) => (
         <section key={group.key}>
-          <h2 className="mb-2 text-xs tracking-[0.22em] text-muted-foreground uppercase">
+          <h2 className="mb-2 text-sm text-muted-foreground">
             {group.label}
           </h2>
           <ul className="flex flex-col gap-2">

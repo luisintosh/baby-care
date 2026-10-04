@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { useCaregiver } from '@/hooks/use-caregiver'
 import { useEvents } from '@/hooks/use-events'
 import { useReminders } from '@/hooks/use-reminders'
+import { HistoryPage } from '@/pages/HistoryPage'
 import { MetricsPage } from '@/pages/MetricsPage'
 import { RemindersPage } from '@/pages/RemindersPage'
 import { TrackPage } from '@/pages/TrackPage'
@@ -37,6 +38,7 @@ export default function App() {
               />
             }
           />
+          <Route path="historial" element={<HistoryPage eventsApi={eventsApi} />} />
           <Route
             path="metricas"
             element={<MetricsPage events={eventsApi.events} loading={eventsApi.loading} />}

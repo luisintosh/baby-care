@@ -75,7 +75,7 @@ export function RemindersPage({
           void submit()
         }}
       >
-        <h2 className="text-xs tracking-[0.22em] text-muted-foreground uppercase">Nuevo aviso</h2>
+        <h2 className="text-sm text-muted-foreground">Nuevo aviso</h2>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="title">Qué hay que recordar</Label>
           <Input
@@ -114,7 +114,7 @@ export function RemindersPage({
       </form>
 
       <section>
-        <h2 className="mb-2 text-xs tracking-[0.22em] text-muted-foreground uppercase">Pendientes</h2>
+        <h2 className="mb-2 text-sm text-muted-foreground">Pendientes</h2>
         {pending.length === 0 ? (
           <p className="text-sm text-muted-foreground">No hay avisos abiertos.</p>
         ) : (
@@ -150,7 +150,7 @@ export function RemindersPage({
 
       {done.length > 0 ? (
         <section>
-          <h2 className="mb-2 text-xs tracking-[0.22em] text-muted-foreground uppercase">Hechos</h2>
+          <h2 className="mb-2 text-sm text-muted-foreground">Hechos</h2>
           <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
             {done.map((reminder) => (
               <li key={reminder.id}>
