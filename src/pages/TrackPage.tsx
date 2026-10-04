@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
 import { EventDialogs } from '@/components/EventDialogs'
@@ -16,10 +16,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
+import { useFitLogRows } from '@/hooks/use-fit-log-rows'
 import { useSelectedTime } from '@/hooks/use-selected-time'
 import type { useEvents } from '@/hooks/use-events'
 import type { useReminders } from '@/hooks/use-reminders'
 import { kindMeta } from '@/lib/kinds'
+import { cn } from '@/lib/utils'
 import type { BabyEvent, Caregiver, EventKind } from '@/lib/types'
 
 type TrackPageProps = {
@@ -30,6 +32,17 @@ type TrackPageProps = {
 
 export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps) {
   const clock = useSelectedTime()
+  const columnRef = useRef<HTMLDivElement>(null)
+  const logFit = useFitLogRows(
+    columnRef,
+    [
+      remindersApi.active.length,
+      eventsApi.loading ? 1 : 0,
+      eventsApi.events.length,
+      eventsApi.error ? 1 : 0,
+      clock.live ? 1 : 0,
+    ].join(':'),
+  )
   const [sleepEvent, setSleepEvent] = useState<BabyEvent | null>(null)
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
@@ -79,7 +92,13 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div
+      ref={columnRef}
+      className={cn(
+        'flex min-h-0 flex-1 flex-col overflow-hidden',
+        logFit.gap === '1' ? 'gap-1' : logFit.gap === '2' ? 'gap-2' : 'gap-5',
+      )}
+    >
       <ReminderBanner
         reminders={remindersApi.active}
         onComplete={(id) => {
@@ -94,6 +113,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
       <RecentLog
         events={eventsApi.events}
         loading={eventsApi.loading}
+        limit={logFit.rows}
         onSelect={handleTimelineSelect}
       />
       <TimeAdjuster

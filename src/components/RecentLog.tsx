@@ -8,11 +8,12 @@ type RecentLogProps = {
   events: BabyEvent[]
   loading: boolean
   onSelect: (event: BabyEvent) => void
+  limit?: number
 }
 
-export function RecentLog({ events, loading, onSelect }: RecentLogProps) {
-  const recent = events.slice(0, 3)
-  const hasEarlier = events.length > 3
+export function RecentLog({ events, loading, onSelect, limit = 3 }: RecentLogProps) {
+  const recent = events.slice(0, limit)
+  const hasEarlier = events.length > recent.length
 
   if (loading) {
     return <div className="h-36 rounded-[1.75rem] bg-card/70" aria-hidden />

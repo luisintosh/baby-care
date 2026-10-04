@@ -17,10 +17,16 @@ type AppShellProps = {
 
 export function AppShell({ caregiver, onChangeUser }: AppShellProps) {
   const { pathname } = useLocation()
+  const track = pathname === '/'
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
-      <header className="flex items-center justify-end px-5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2">
+    <div
+      className={cn(
+        'mx-auto flex w-full max-w-md flex-col',
+        track ? 'h-dvh overflow-hidden' : 'min-h-dvh',
+      )}
+    >
+      <header className="flex shrink-0 items-center justify-end px-5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2">
         <button
           type="button"
           onClick={onChangeUser}
@@ -29,7 +35,14 @@ export function AppShell({ caregiver, onChangeUser }: AppShellProps) {
           {caregiverName(caregiver)}
         </button>
       </header>
-      <main className="flex-1 px-5 pb-28">
+      <main
+        className={cn(
+          'px-5 pb-28',
+          track
+            ? 'flex min-h-0 flex-1 flex-col overflow-hidden pb-[calc(4.5rem+max(0.75rem,env(safe-area-inset-bottom)))]'
+            : 'flex-1',
+        )}
+      >
         <Outlet />
       </main>
       <nav className="fixed inset-x-0 bottom-0 mx-auto max-w-md bg-background/90 px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md">
