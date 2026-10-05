@@ -111,6 +111,15 @@
     background-image:
       radial-gradient(1200px 500px at 50% -10%, oklch(0.78 0.13 75 / 0.14), transparent 60%);
   }
+  /* Installed iOS apps report a short svh. The large viewport is the screen. */
+  @media (display-mode: standalone), (display-mode: fullscreen) {
+    body {
+      height: var(--app-height, 100lvh);
+    }
+  }
+  html.standalone body {
+    height: var(--app-height, 100lvh);
+  }
   #root {
     display: flex;
     flex-direction: column;
@@ -121,42 +130,35 @@
   }
 }
 
-/* Browser Safari already clears the home indicator with its toolbar, and on
-   first load it reports a tall safe-area that pads the tab bar into a gap.
-   The installed app is the one that needs the inset. */
+/* The status bar covers the top of a chip that starts exactly on the safe
+   area, so keep 0.75rem of air under the inset. Safari's toolbar already
+   clears the home indicator, and its first paint can report a tall bottom
+   inset, so only the installed app pads the tab bar for that inset. */
 .safe-pad-top {
-  padding-top: 0.75rem;
+  padding-top: calc(max(env(safe-area-inset-top, 0px), var(--safe-top, 0px)) + 0.75rem);
 }
 .safe-pad-bottom {
   padding-bottom: 0.75rem;
 }
 @media (display-mode: standalone), (display-mode: fullscreen) {
-  .safe-pad-top {
-    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
-  }
   .safe-pad-bottom {
     padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
   }
-}
-html.standalone .safe-pad-top {
-  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
 }
 html.standalone .safe-pad-bottom {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
 }
 
 .gate-pad {
-  padding-top: 2.5rem;
+  padding-top: max(2.5rem, env(safe-area-inset-top, 0px), var(--safe-top, 0px));
   padding-bottom: 2.5rem;
 }
 @media (display-mode: standalone), (display-mode: fullscreen) {
   .gate-pad {
-    padding-top: max(2.5rem, env(safe-area-inset-top, 0px));
     padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
   }
 }
 html.standalone .gate-pad {
-  padding-top: max(2.5rem, env(safe-area-inset-top, 0px));
   padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
 }
 
