@@ -1,0 +1,41 @@
+{
+  "title": "Approve the arrangement",
+  "question": "Log first is locked, in today’s colors and rounded shapes. Which arrangement should be built? The aviso stays gold, the last two of each kind stay above Comida, and the clock with ±1 hour and ±10 minutes stays on the big pad.",
+  "options": [
+    {
+      "id": "log-first-1",
+      "label": "One log card",
+      "kicker": "THE LOCKED SCREEN",
+      "thesis": "The two times of each kind sit side by side in one card. The Comida pad is below it.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "Gold aviso, one four-row log card, then the clock and COMIDA pad, then three small keys.",
+      "risk": "The pad shares the screen with a tall card, so the tap is large but not huge.",
+      "comp": ".impeccable/mocks/log-first-1.webp"
+    },
+    {
+      "id": "log-first-2",
+      "label": "Eight rows",
+      "thesis": "Each of the last two logs is its own slim row. The Comida pad gets shorter.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "A full-width gold aviso, eight rows, then a shorter pad with the clock and COMIDA.",
+      "risk": "The list leads so hard that the night tap gets small.",
+      "comp": ".impeccable/mocks/log-first-2.webp"
+    },
+    {
+      "id": "log-first-3",
+      "label": "Four-column band",
+      "thesis": "The log is a short band of four columns. The Comida pad owns the rest of the screen.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "Gold aviso, four narrow columns with two times each, then a large pad with 03:40 and COMIDA.",
+      "risk": "Four narrow columns are harder to read half asleep than a single list.",
+      "comp": ".impeccable/mocks/log-first-3.webp"
+    }
+  ],
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  }
+}

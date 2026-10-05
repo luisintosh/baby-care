@@ -1,0 +1,1014 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-10-04T17:51:16.312Z",
+  "comp": ".impeccable/mocks/log-first-1.webp",
+  "warnings": [],
+  "uncoveredInkCells": [],
+  "compSize": {
+    "width": 720,
+    "height": 1280
+  },
+  "aspect": 0.5625,
+  "orientation": "portrait",
+  "palette": [
+    {
+      "hex": "#3d2c1d",
+      "coverage": 0.5562
+    },
+    {
+      "hex": "#1c1817",
+      "coverage": 0.3542
+    },
+    {
+      "hex": "#e1a93c",
+      "coverage": 0.0749
+    },
+    {
+      "hex": "#efe3d2",
+      "coverage": 0.0092
+    },
+    {
+      "hex": "#e5b762",
+      "coverage": 0.0056
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0263,
+      "strength": 1
+    },
+    {
+      "y": 0.0482,
+      "strength": 0.2449
+    },
+    {
+      "y": 0.0833,
+      "strength": 0.263
+    },
+    {
+      "y": 0.1228,
+      "strength": 1
+    },
+    {
+      "y": 0.1974,
+      "strength": 0.2043
+    },
+    {
+      "y": 0.2544,
+      "strength": 0.2108
+    },
+    {
+      "y": 0.2939,
+      "strength": 0.2432
+    },
+    {
+      "y": 0.5,
+      "strength": 0.2299
+    },
+    {
+      "y": 0.614,
+      "strength": 0.3014
+    },
+    {
+      "y": 0.7544,
+      "strength": 0.2854
+    },
+    {
+      "y": 0.9518,
+      "strength": 0.2451
+    }
+  ],
+  "regions": [
+    {
+      "id": "aviso",
+      "kind": "control",
+      "note": "Gold rounded banner reading Cita mañana, 10:00 with a dark Hecho button.",
+      "grid": "A0:J1",
+      "snap": false,
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.2
+      },
+      "px": {
+        "x": 0,
+        "y": 0,
+        "w": 720,
+        "h": 256
+      },
+      "aspect": 2.8125,
+      "palette": [
+        {
+          "hex": "#e0a83b",
+          "coverage": 0.3564
+        },
+        {
+          "hex": "#392917",
+          "coverage": 0.3194
+        },
+        {
+          "hex": "#191815",
+          "coverage": 0.2871
+        },
+        {
+          "hex": "#ddb060",
+          "coverage": 0.0246
+        },
+        {
+          "hex": "#f8f4c5",
+          "coverage": 0.0125
+        }
+      ],
+      "detail": {
+        "energy": 19.2964
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "row-feed",
+      "kind": "text",
+      "note": "Recent row: bottle emoji, 03:10, Luis.",
+      "grid": "B2:H2",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.2,
+        "w": 0.7,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 256,
+        "w": 504,
+        "h": 128
+      },
+      "aspect": 3.9375,
+      "palette": [
+        {
+          "hex": "#382818",
+          "coverage": 0.9544
+        },
+        {
+          "hex": "#f2e9d9",
+          "coverage": 0.0227
+        },
+        {
+          "hex": "#835732",
+          "coverage": 0.012
+        },
+        {
+          "hex": "#cabcaa",
+          "coverage": 0.0058
+        },
+        {
+          "hex": "#968979",
+          "coverage": 0.0051
+        }
+      ],
+      "detail": {
+        "energy": 16.8769
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 2,
+          "glyphs": 19,
+          "capHeightPx": 22.8,
+          "inkIsDark": false,
+          "allCaps": false,
+          "advance": 0.6503,
+          "advTall": 0.6306,
+          "advX": 0.7655,
+          "gap": 0.1774,
+          "xRatio": 0.5365,
+          "stemW": 0.1521,
+          "contrast": 0.8836,
+          "serif": 1.6823,
+          "densTall": 0.4766,
+          "densX": 0.5379,
+          "weight": 0.4766
+        },
+        "widthClass": "wide",
+        "weightClass": "regular",
+        "chosen": {
+          "family": "Manjari",
+          "weight": 700,
+          "fontSizePx": 33,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 9,
+            "capHeightPx": 22.9,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.6773,
+            "advTall": 0.6992,
+            "advX": 0.6773,
+            "gap": 0.1092,
+            "xRatio": 0.7787,
+            "stemW": 0.1674,
+            "contrast": 0.9537,
+            "serif": 2.6649,
+            "densTall": 0.5047,
+            "densX": 0.5945,
+            "weight": 0.5047
+          },
+          "stamp": "893c059e07c8"
+        }
+      }
+    },
+    {
+      "id": "row-poop",
+      "kind": "text",
+      "note": "Recent row: poop emoji, 02:20, Luis.",
+      "grid": "B2:H3",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.2,
+        "w": 0.7,
+        "h": 0.2
+      },
+      "px": {
+        "x": 72,
+        "y": 256,
+        "w": 504,
+        "h": 256
+      },
+      "aspect": 1.9688,
+      "palette": [
+        {
+          "hex": "#382818",
+          "coverage": 0.9438
+        },
+        {
+          "hex": "#4f4535",
+          "coverage": 0.0216
+        },
+        {
+          "hex": "#f1e8d7",
+          "coverage": 0.0188
+        },
+        {
+          "hex": "#a59785",
+          "coverage": 0.0107
+        },
+        {
+          "hex": "#815430",
+          "coverage": 0.0051
+        }
+      ],
+      "detail": {
+        "energy": 16.4564
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "row-sleep",
+      "kind": "text",
+      "note": "Recent row: sleep emoji, 01:00–02:10.",
+      "grid": "B3:H3",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.3,
+        "w": 0.7,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 384,
+        "w": 504,
+        "h": 128
+      },
+      "aspect": 3.9375,
+      "palette": [
+        {
+          "hex": "#382818",
+          "coverage": 0.9575
+        },
+        {
+          "hex": "#a39380",
+          "coverage": 0.0184
+        },
+        {
+          "hex": "#f4ecda",
+          "coverage": 0.013
+        },
+        {
+          "hex": "#f7ba31",
+          "coverage": 0.0078
+        },
+        {
+          "hex": "#685848",
+          "coverage": 0.0034
+        }
+      ],
+      "detail": {
+        "energy": 14.7702
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 2,
+          "glyphs": 24,
+          "capHeightPx": 19.2,
+          "inkIsDark": false,
+          "allCaps": false,
+          "advance": 0.6038,
+          "advTall": 0.6408,
+          "advX": 0.5915,
+          "gap": 0.1725,
+          "xRatio": 0.7029,
+          "stemW": 0.1267,
+          "contrast": 0.9345,
+          "serif": null,
+          "densTall": 0.4977,
+          "densX": 0.4484,
+          "weight": 0.4977
+        },
+        "widthClass": "normal",
+        "weightClass": "medium",
+        "chosen": {
+          "family": "DM Mono",
+          "weight": 300,
+          "fontSizePx": 27,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 11,
+            "capHeightPx": 19.3,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.6986,
+            "advTall": 0.7504,
+            "advX": null,
+            "gap": 0.1682,
+            "xRatio": 0.5472,
+            "stemW": 0.1391,
+            "contrast": 0.9694,
+            "serif": null,
+            "densTall": 0.523,
+            "densX": null,
+            "weight": 0.523
+          },
+          "stamp": "6cdf560e177f"
+        }
+      }
+    },
+    {
+      "id": "earlier",
+      "kind": "control",
+      "note": "Text link Ver anteriores.",
+      "grid": "C4:G4",
+      "snap": false,
+      "box": {
+        "x": 0.2,
+        "y": 0.4,
+        "w": 0.5,
+        "h": 0.1
+      },
+      "px": {
+        "x": 144,
+        "y": 512,
+        "w": 360,
+        "h": 128
+      },
+      "aspect": 2.8125,
+      "palette": [
+        {
+          "hex": "#372818",
+          "coverage": 0.7043
+        },
+        {
+          "hex": "#1c1813",
+          "coverage": 0.1868
+        },
+        {
+          "hex": "#f1bb5b",
+          "coverage": 0.0736
+        },
+        {
+          "hex": "#ecc96f",
+          "coverage": 0.0259
+        },
+        {
+          "hex": "#dfb979",
+          "coverage": 0.0094
+        }
+      ],
+      "detail": {
+        "energy": 16.3552
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "clock",
+      "kind": "text",
+      "note": "Large gold clock 03:40.",
+      "grid": "D5:G5",
+      "snap": false,
+      "box": {
+        "x": 0.3,
+        "y": 0.5,
+        "w": 0.4,
+        "h": 0.1
+      },
+      "px": {
+        "x": 216,
+        "y": 640,
+        "w": 288,
+        "h": 128
+      },
+      "aspect": 2.25,
+      "palette": [
+        {
+          "hex": "#443020",
+          "coverage": 0.8856
+        },
+        {
+          "hex": "#271d17",
+          "coverage": 0.0711
+        },
+        {
+          "hex": "#4d482a",
+          "coverage": 0.0266
+        },
+        {
+          "hex": "#f5e7d7",
+          "coverage": 0.012
+        },
+        {
+          "hex": "#ccbcac",
+          "coverage": 0.0046
+        }
+      ],
+      "detail": {
+        "energy": 7.6813
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 7,
+          "capHeightPx": 14.1,
+          "inkIsDark": false,
+          "allCaps": false,
+          "advance": null,
+          "advTall": null,
+          "advX": null,
+          "gap": 0.4243,
+          "xRatio": 0.5581,
+          "stemW": 0.2724,
+          "contrast": 1.0531,
+          "serif": 1.0011,
+          "densTall": null,
+          "densX": null,
+          "weight": null
+        },
+        "widthClass": "normal",
+        "weightClass": "black",
+        "chosen": {
+          "family": "Sora",
+          "weight": 700,
+          "fontSizePx": 19,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 5,
+            "capHeightPx": 14.3,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.8363,
+            "advTall": 0.8537,
+            "advX": 0.2788,
+            "gap": 0.0871,
+            "xRatio": 0.7197,
+            "stemW": 0.2524,
+            "contrast": 1.0692,
+            "serif": null,
+            "densTall": 0.6152,
+            "densX": 0.6717,
+            "weight": 0.6152
+          },
+          "stamp": "1460af09a4e2"
+        }
+      }
+    },
+    {
+      "id": "key-minus-hour",
+      "kind": "control",
+      "note": "Key labeled −1 h.",
+      "grid": "B6:C6",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.6,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 768,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#4b3828",
+          "coverage": 0.827
+        },
+        {
+          "hex": "#1c1817",
+          "coverage": 0.173
+        }
+      ],
+      "detail": {
+        "energy": 0.6099
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "key-plus-hour",
+      "kind": "control",
+      "note": "Key labeled +1 h.",
+      "grid": "D6:E6",
+      "snap": false,
+      "box": {
+        "x": 0.3,
+        "y": 0.6,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 216,
+        "y": 768,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#483828",
+          "coverage": 0.778
+        },
+        {
+          "hex": "#1a1818",
+          "coverage": 0.14
+        },
+        {
+          "hex": "#e6d8c2",
+          "coverage": 0.0717
+        },
+        {
+          "hex": "#bcac95",
+          "coverage": 0.0093
+        },
+        {
+          "hex": "#887868",
+          "coverage": 0.001
+        }
+      ],
+      "detail": {
+        "energy": 2.1958
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "key-minus-ten",
+      "kind": "control",
+      "note": "Key labeled −10.",
+      "grid": "F6:G6",
+      "snap": false,
+      "box": {
+        "x": 0.5,
+        "y": 0.6,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 360,
+        "y": 768,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#483828",
+          "coverage": 0.7362
+        },
+        {
+          "hex": "#1b1817",
+          "coverage": 0.1471
+        },
+        {
+          "hex": "#efe6d7",
+          "coverage": 0.0543
+        },
+        {
+          "hex": "#a3bfce",
+          "coverage": 0.034
+        },
+        {
+          "hex": "#f5cd66",
+          "coverage": 0.0284
+        }
+      ],
+      "detail": {
+        "energy": 3.2016
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "key-plus-ten",
+      "kind": "control",
+      "note": "Key labeled +10.",
+      "grid": "H6:I6",
+      "snap": false,
+      "box": {
+        "x": 0.7,
+        "y": 0.6,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 504,
+        "y": 768,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#483828",
+          "coverage": 0.8313
+        },
+        {
+          "hex": "#191815",
+          "coverage": 0.1687
+        }
+      ],
+      "detail": {
+        "energy": 0.5776
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "feed-button",
+      "kind": "control",
+      "note": "Wide rounded tap whose face is the bottle emoji.",
+      "grid": "B7:I7",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.7,
+        "w": 0.8,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 896,
+        "w": 576,
+        "h": 128
+      },
+      "aspect": 4.5,
+      "palette": [
+        {
+          "hex": "#453528",
+          "coverage": 0.6768
+        },
+        {
+          "hex": "#1f1818",
+          "coverage": 0.2972
+        },
+        {
+          "hex": "#e7dbc7",
+          "coverage": 0.0237
+        },
+        {
+          "hex": "#403818",
+          "coverage": 0.0015
+        },
+        {
+          "hex": "#f8e898",
+          "coverage": 0.0009
+        }
+      ],
+      "detail": {
+        "energy": 5.4756
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "poop-button",
+      "kind": "control",
+      "note": "Small rounded tap whose face is the poop emoji.",
+      "grid": "B8:C8",
+      "snap": false,
+      "box": {
+        "x": 0.1,
+        "y": 0.8,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 1024,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#231c1c",
+          "coverage": 0.8984
+        },
+        {
+          "hex": "#865a33",
+          "coverage": 0.069
+        },
+        {
+          "hex": "#58361b",
+          "coverage": 0.0148
+        },
+        {
+          "hex": "#f8f1e5",
+          "coverage": 0.0138
+        },
+        {
+          "hex": "#3c3828",
+          "coverage": 0.0039
+        }
+      ],
+      "detail": {
+        "energy": 4.0173
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "sleep-button",
+      "kind": "control",
+      "note": "Small rounded tap whose face is the sleep emoji.",
+      "grid": "E8:F8",
+      "snap": false,
+      "box": {
+        "x": 0.4,
+        "y": 0.8,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 288,
+        "y": 1024,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#281f1f",
+          "coverage": 0.8359
+        },
+        {
+          "hex": "#f8ca3d",
+          "coverage": 0.0703
+        },
+        {
+          "hex": "#373524",
+          "coverage": 0.0498
+        },
+        {
+          "hex": "#eca621",
+          "coverage": 0.0257
+        },
+        {
+          "hex": "#f8e373",
+          "coverage": 0.0184
+        }
+      ],
+      "detail": {
+        "energy": 4.6727
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "medicine-button",
+      "kind": "control",
+      "note": "Small rounded tap whose face is the medicine emoji.",
+      "grid": "H8:I8",
+      "snap": false,
+      "box": {
+        "x": 0.7,
+        "y": 0.8,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 504,
+        "y": 1024,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#211c1c",
+          "coverage": 0.8947
+        },
+        {
+          "hex": "#9d5b2e",
+          "coverage": 0.0458
+        },
+        {
+          "hex": "#383323",
+          "coverage": 0.0341
+        },
+        {
+          "hex": "#703d19",
+          "coverage": 0.0137
+        },
+        {
+          "hex": "#f8d058",
+          "coverage": 0.0117
+        }
+      ],
+      "detail": {
+        "energy": 2.1688
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "nav-registrar",
+      "kind": "chrome",
+      "note": "Registrar tab, gold.",
+      "grid": "B9:C9",
+      "box": {
+        "x": 0.1,
+        "y": 0.9,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 72,
+        "y": 1152,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#201817",
+          "coverage": 0.8821
+        },
+        {
+          "hex": "#f1b84b",
+          "coverage": 0.0545
+        },
+        {
+          "hex": "#e1bd74",
+          "coverage": 0.027
+        },
+        {
+          "hex": "#65481c",
+          "coverage": 0.021
+        },
+        {
+          "hex": "#8c7034",
+          "coverage": 0.0155
+        }
+      ],
+      "detail": {
+        "energy": 10.1237
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "nav-metrics",
+      "kind": "chrome",
+      "note": "Métricas tab.",
+      "grid": "E9:F9",
+      "box": {
+        "x": 0.4,
+        "y": 0.9,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 288,
+        "y": 1152,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#231817",
+          "coverage": 0.8838
+        },
+        {
+          "hex": "#9e8d72",
+          "coverage": 0.0937
+        },
+        {
+          "hex": "#7a6b59",
+          "coverage": 0.0122
+        },
+        {
+          "hex": "#4b4234",
+          "coverage": 0.0088
+        },
+        {
+          "hex": "#382808",
+          "coverage": 0.0015
+        }
+      ],
+      "detail": {
+        "energy": 8.0637
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "nav-avisos",
+      "kind": "chrome",
+      "note": "Avisos tab.",
+      "grid": "H9:I9",
+      "box": {
+        "x": 0.7,
+        "y": 0.9,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 504,
+        "y": 1152,
+        "w": 144,
+        "h": 128
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#211817",
+          "coverage": 0.9005
+        },
+        {
+          "hex": "#99896d",
+          "coverage": 0.0893
+        },
+        {
+          "hex": "#483b2d",
+          "coverage": 0.0059
+        },
+        {
+          "hex": "#786353",
+          "coverage": 0.0034
+        },
+        {
+          "hex": "#988888",
+          "coverage": 0.001
+        }
+      ],
+      "detail": {
+        "energy": 5.4266
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    }
+  ]
+}

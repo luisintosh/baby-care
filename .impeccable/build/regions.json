@@ -1,0 +1,120 @@
+{
+  "regions": [
+    {
+      "id": "aviso",
+      "kind": "control",
+      "grid": "A0:J1",
+      "snap": false,
+      "note": "Gold rounded banner reading Cita mañana, 10:00 with a dark Hecho button."
+    },
+    {
+      "id": "row-feed",
+      "kind": "text",
+      "grid": "B2:H2",
+      "snap": false,
+      "note": "Recent row: bottle emoji, 03:10, Luis."
+    },
+    {
+      "id": "row-poop",
+      "kind": "text",
+      "grid": "B2:H3",
+      "snap": false,
+      "note": "Recent row: poop emoji, 02:20, Luis."
+    },
+    {
+      "id": "row-sleep",
+      "kind": "text",
+      "grid": "B3:H3",
+      "snap": false,
+      "note": "Recent row: sleep emoji, 01:00–02:10."
+    },
+    {
+      "id": "earlier",
+      "kind": "control",
+      "grid": "C4:G4",
+      "snap": false,
+      "note": "Text link Ver anteriores."
+    },
+    {
+      "id": "clock",
+      "kind": "text",
+      "grid": "D5:G5",
+      "snap": false,
+      "note": "Large gold clock 03:40."
+    },
+    {
+      "id": "key-minus-hour",
+      "kind": "control",
+      "grid": "B6:C6",
+      "snap": false,
+      "note": "Key labeled −1 h."
+    },
+    {
+      "id": "key-plus-hour",
+      "kind": "control",
+      "grid": "D6:E6",
+      "snap": false,
+      "note": "Key labeled +1 h."
+    },
+    {
+      "id": "key-minus-ten",
+      "kind": "control",
+      "grid": "F6:G6",
+      "snap": false,
+      "note": "Key labeled −10."
+    },
+    {
+      "id": "key-plus-ten",
+      "kind": "control",
+      "grid": "H6:I6",
+      "snap": false,
+      "note": "Key labeled +10."
+    },
+    {
+      "id": "feed-button",
+      "kind": "control",
+      "grid": "B7:I7",
+      "snap": false,
+      "note": "Wide rounded tap whose face is the bottle emoji."
+    },
+    {
+      "id": "poop-button",
+      "kind": "control",
+      "grid": "B8:C8",
+      "snap": false,
+      "note": "Small rounded tap whose face is the poop emoji."
+    },
+    {
+      "id": "sleep-button",
+      "kind": "control",
+      "grid": "E8:F8",
+      "snap": false,
+      "note": "Small rounded tap whose face is the sleep emoji."
+    },
+    {
+      "id": "medicine-button",
+      "kind": "control",
+      "grid": "H8:I8",
+      "snap": false,
+      "note": "Small rounded tap whose face is the medicine emoji."
+    },
+    {
+      "id": "nav-registrar",
+      "kind": "chrome",
+      "grid": "B9:C9",
+      "note": "Registrar tab, gold."
+    },
+    {
+      "id": "nav-metrics",
+      "kind": "chrome",
+      "grid": "E9:F9",
+      "note": "Métricas tab."
+    },
+    {
+      "id": "nav-avisos",
+      "kind": "chrome",
+      "grid": "H9:I9",
+      "note": "Avisos tab."
+    }
+  ]
+}

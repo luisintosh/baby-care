@@ -1,0 +1,160 @@
+{
+  "title": "Choose the visual world",
+  "question": "Same colors and rounded shapes as Baby today. Only the components move. Comida stays the big tap. Popó, sueño, and medicina stay small. The clock keeps ±10 minutes and ±1 hour. Avisos have to stop you at a glance, and only the last two logs of each kind stay visible.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Log first",
+      "kicker": "THE ROLL",
+      "lineage": "Today’s dark rounded cards, redrawn so the handoff is the header",
+      "thesis": "The last two of each kind sit under a lamp aviso. The big rounded Comida pad, clock included, sits below.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "A lamp aviso band, then two compact rows each for Comida, Popó, Sueño, and Medicina, then one large rounded Comida pad carrying 03:40 and the pads −1 h, +1 h, −10, +10, then three small rounded keys.",
+      "risk": "The log leads, so the big tap sits lower and a tired thumb has to travel.",
+      "raised": [
+        {
+          "from": "Timetable rack",
+          "raise": "Reversed plate: the aviso is the only region that inverts into lamp gold."
+        },
+        {
+          "from": "Lexicon",
+          "raise": "Apparatus rank: the aviso gets Hecho and a full band. A log row gets only a time and a name."
+        },
+        {
+          "from": "Catalog sleeve",
+          "raise": "One owner: the Comida pad is the only large object. The log stays a compact header."
+        },
+        {
+          "from": "Product marketing",
+          "raise": "Accent budget: lamp gold is only the aviso, the clock, and Comida. The small keys stay plain."
+        },
+        {
+          "from": "Type specimen",
+          "raise": "Clock as specimen: 03:40 is the largest type. The pads step it. Nothing drags."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/r3-assigned.webp"
+    },
+    {
+      "id": "model-pick",
+      "label": "Time on Comida",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Today’s rounded pad, with the clock living on the button",
+      "thesis": "One big rounded Comida pad holds the clock and the nudge keys. Tap it to log.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "A lamp aviso, then one huge rounded pad: 03:40, the four nudge keys, and COMIDA. Three small keys under it. The two-line log sits below the pad.",
+      "risk": "This is the most direct redraw of the screen you already have, and it can feel like a small tweak.",
+      "comp": ".impeccable/mocks/decision/r3-pick.webp"
+    },
+    {
+      "id": "challenger-gate-board",
+      "label": "Stays lit",
+      "verdict": "competitive",
+      "lineage": "A gate board, translated into today’s rounded cards and lamp gold",
+      "thesis": "The aviso row holds lamp gold until someone marks Hecho. It does not fade into the list.",
+      "palette": ["#1C1612", "#3A322C", "#E4B15C", "#F3E6D4"],
+      "materials": ["today’s dark ground", "rounded cards", "lamp gold"],
+      "viewport": "A solid lamp row for the aviso, a ranked stack of two rounded rows per kind, and a large rounded Comida segment with the clock and nudge keys.",
+      "case": "Holds the rule that a change stays lit until you notice. The boarding-pass shape is dropped so the screen stays today’s cards.",
+      "risk": "The lit row can shout over the tap if the gold spreads.",
+      "comp": ".impeccable/mocks/decision/r3-board.webp",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/vernacular-ephemera-boarding-pass-and-gate-board.webp"
+    },
+    {
+      "id": "challenger-timetable",
+      "label": "Timetable rack",
+      "verdict": "declined",
+      "lineage": "A pocket timetable on raked glass slides",
+      "thesis": "One type size, rank by weight, slides on a rake.",
+      "palette": ["#E6B15A", "#1A1A1A", "#F4EFE4", "#8C2F2F"],
+      "materials": ["goldenrod bed", "tinted slides"],
+      "viewport": "Raked columns of equal-size type.",
+      "case": "One type size forbids a huge Comida pad, and the rake is not today’s shape.",
+      "kept": "Reversed plate: the aviso is the only inverted region.",
+      "risk": "Comida shrinks to the size of the log.",
+      "hero": "https://impeccable.style/worlds/cards/rw-timetable-slide-rack-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/rw-timetable-slide-rack.webp"
+    },
+    {
+      "id": "challenger-lexicon",
+      "label": "Lexicon",
+      "verdict": "declined",
+      "lineage": "A nineteenth-century lexicon page",
+      "thesis": "Guide words name the span. Rank is how much apparatus a row gets.",
+      "palette": ["#F3E6D0", "#1A1A1A", "#C4321A"],
+      "materials": ["cream stock", "engraving black"],
+      "viewport": "A book spread with a shoulder index.",
+      "case": "A book page is not the night tap, and cream stock breaks today’s colors.",
+      "kept": "Apparatus rank: the aviso gets the control. A log row gets time and name.",
+      "risk": "It reads as a reference book.",
+      "hero": "https://impeccable.style/worlds/cards/rw-lexicon-shoulder-and-plate-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/rw-lexicon-shoulder-and-plate.webp"
+    },
+    {
+      "id": "challenger-saville",
+      "label": "Catalog sleeve",
+      "verdict": "declined",
+      "lineage": "A factory-records sleeve of coded color and a white plot",
+      "thesis": "Names become color codes. One plot owns the black field.",
+      "palette": ["#111111", "#FFFFFF", "#E10600"],
+      "materials": ["matte black", "hairline plot"],
+      "viewport": "A black field, a pulse of lines, no words.",
+      "case": "Hidden labels fail a 3am tap, and the black field drops the lamp gold.",
+      "kept": "One owner: only Comida is large.",
+      "risk": "You cannot read the button.",
+      "hero": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve.webp"
+    },
+    {
+      "id": "challenger-marketing",
+      "label": "Product page",
+      "verdict": "declined",
+      "lineage": "A near-monochrome software marketing page",
+      "thesis": "One accent, ghost buttons, a claim then a proof.",
+      "palette": ["#F7F7F5", "#161616", "#E4B15C"],
+      "materials": ["neutral scale", "soft gradients"],
+      "viewport": "A light marketing page with a small accent button.",
+      "case": "A marketing page is not the logger, and a light ground breaks today’s night screen.",
+      "kept": "Accent budget: gold only on the aviso, the clock, and Comida.",
+      "risk": "The tap becomes a ghost button.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing.webp"
+    },
+    {
+      "id": "challenger-specimen",
+      "label": "Type specimen",
+      "verdict": "declined",
+      "lineage": "An interactive variable-font specimen",
+      "thesis": "One giant character, dragged along an axis.",
+      "palette": ["#F6F4EF", "#111111", "#E4B15C"],
+      "materials": ["paper", "ink", "a slider"],
+      "viewport": "A giant letter and a weight slider.",
+      "case": "A drag slider is not the ±10 and ±1 hour taps, and there is no log.",
+      "kept": "Clock as specimen: 03:40 is the largest type, stepped by pads.",
+      "risk": "No button, no list.",
+      "hero": "https://impeccable.style/worlds/cards/variable-font-specimen-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/variable-font-specimen.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "Four equal soft tiles, a small clock, and a gentle list. What baby logs usually ship.",
+    "palette": ["#F7F3EE", "#E7A39A", "#2A2420", "#7BA3C9"],
+    "materials": ["rounded cards", "pastel fills"],
+    "viewport": "A header, four emoji tiles in a square, a quiet aviso banner, and a timeline under them.",
+    "risk": "Indistinguishable from every other baby log, and Comida is the same size as Popó.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}
