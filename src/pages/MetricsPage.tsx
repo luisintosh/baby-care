@@ -1,3 +1,4 @@
+import { babyAge } from '@/lib/baby'
 import { formatAgo, formatDuration } from '@/lib/format'
 import { computeMetrics } from '@/lib/metrics'
 import { cn } from '@/lib/utils'
@@ -10,6 +11,7 @@ type MetricsPageProps = {
 
 export function MetricsPage({ events, loading }: MetricsPageProps) {
   const now = new Date()
+  const age = babyAge(now)
   const metrics = computeMetrics(events, now)
   const maxFeeds = Math.max(1, ...metrics.week.map((day) => day.feeds))
   const maxPoops = Math.max(1, ...metrics.week.map((day) => day.poops))
@@ -31,6 +33,29 @@ export function MetricsPage({ events, loading }: MetricsPageProps) {
 
   return (
     <div className="flex flex-col gap-6">
+      <section>
+        <h2 className="mb-3 text-sm text-muted-foreground">Edad</h2>
+        <article className="rounded-2xl bg-card/80 px-4 py-4 ring-1 ring-white/8">
+          <p className="text-lg leading-snug font-medium">{age.label}</p>
+          <dl className="mt-3 grid grid-cols-3 text-center">
+            <div>
+              <dd className="font-clock text-2xl text-lamp">{age.years}</dd>
+              <dt className="text-xs text-muted-foreground">{age.years === 1 ? 'año' : 'años'}</dt>
+            </div>
+            <div>
+              <dd className="font-clock text-2xl text-lamp">{age.months}</dd>
+              <dt className="text-xs text-muted-foreground">{age.months === 1 ? 'mes' : 'meses'}</dt>
+            </div>
+            <div>
+              <dd className="font-clock text-2xl text-lamp">{age.weeks}</dd>
+              <dt className="text-xs text-muted-foreground">
+                {age.weeks === 1 ? 'semana' : 'semanas'}
+              </dt>
+            </div>
+          </dl>
+        </article>
+      </section>
+
       <section>
         <h2 className="mb-3 text-sm text-muted-foreground">Ahora</h2>
         <div className="grid grid-cols-2 gap-2">
