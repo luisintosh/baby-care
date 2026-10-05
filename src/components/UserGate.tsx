@@ -7,7 +7,7 @@ type UserGateProps = {
 
 export function UserGate({ onChoose }: UserGateProps) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-5 pt-[max(2.5rem,calc(env(safe-area-inset-top)+1.5rem))] pb-10">
+    <main className="gate-pad flex min-h-0 w-full max-w-md flex-1 flex-col justify-center overflow-y-auto px-5">
       <h1 className="font-heading text-4xl leading-tight">¿Quién registra?</h1>
       <p className="mt-3 text-muted-foreground">
         Elige tu nombre. Queda en este teléfono hasta que lo cambies.

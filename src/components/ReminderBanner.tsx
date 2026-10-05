@@ -11,7 +11,7 @@ export function ReminderBanner({ reminders, onComplete }: ReminderBannerProps) {
   if (reminders.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex shrink-0 flex-col gap-2">
       {reminders.map((reminder) => (
         <article
           key={reminder.id}

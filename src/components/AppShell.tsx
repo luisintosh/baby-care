@@ -20,13 +20,8 @@ export function AppShell({ caregiver, onChangeUser }: AppShellProps) {
   const track = pathname === '/'
 
   return (
-    <div
-      className={cn(
-        'mx-auto flex w-full max-w-md flex-col',
-        track ? 'h-dvh overflow-hidden' : 'min-h-dvh',
-      )}
-    >
-      <header className="flex shrink-0 items-center justify-end px-5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2">
+    <div className="flex min-h-0 w-full max-w-md flex-1 flex-col overflow-hidden">
+      <header className="safe-pad-top flex shrink-0 items-center justify-end px-5 pb-2">
         <button
           type="button"
           onClick={onChangeUser}
@@ -37,15 +32,15 @@ export function AppShell({ caregiver, onChangeUser }: AppShellProps) {
       </header>
       <main
         className={cn(
-          'px-5 pb-28',
+          'min-h-0 w-full flex-1 px-5',
           track
-            ? 'flex min-h-0 flex-1 flex-col overflow-hidden pb-[calc(4.5rem+max(0.75rem,env(safe-area-inset-bottom)))]'
-            : 'flex-1',
+            ? 'flex flex-col overflow-hidden'
+            : 'overflow-y-auto overscroll-y-contain pb-6',
         )}
       >
         <Outlet />
       </main>
-      <nav className="fixed inset-x-0 bottom-0 mx-auto max-w-md bg-background/90 px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md">
+      <nav className="safe-pad-bottom shrink-0 bg-background/90 px-3 pt-2 backdrop-blur-md">
         <ul className="grid grid-cols-3 gap-1">
           {TABS.map((tab) => (
             <li key={tab.to}>

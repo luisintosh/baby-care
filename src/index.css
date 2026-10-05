@@ -95,14 +95,121 @@
   }
   html {
     @apply font-sans;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
   body {
-    @apply min-h-dvh bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased;
+    position: fixed;
+    top: var(--app-top, 0px);
+    left: 0;
+    width: 100%;
+    height: var(--app-height, 100svh);
+    overflow: hidden;
+    overscroll-behavior: none;
     background-image:
       radial-gradient(1200px 500px at 50% -10%, oklch(0.78 0.13 75 / 0.14), transparent 60%);
   }
   #root {
-    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+/* Browser Safari already clears the home indicator with its toolbar, and on
+   first load it reports a tall safe-area that pads the tab bar into a gap.
+   The installed app is the one that needs the inset. */
+.safe-pad-top {
+  padding-top: 0.75rem;
+}
+.safe-pad-bottom {
+  padding-bottom: 0.75rem;
+}
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  .safe-pad-top {
+    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+  }
+  .safe-pad-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+html.standalone .safe-pad-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+html.standalone .safe-pad-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+.gate-pad {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  .gate-pad {
+    padding-top: max(2.5rem, env(safe-area-inset-top, 0px));
+    padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+  }
+}
+html.standalone .gate-pad {
+  padding-top: max(2.5rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-height: 760px) {
+  .track-stack {
+    gap: 0.5rem;
+  }
+  .track-clock {
+    padding-block: 0.75rem;
+  }
+  .track-clock-face {
+    font-size: 2.25rem;
+  }
+  .track-shifts {
+    margin-top: 0.75rem;
+  }
+  .track-pad {
+    gap: 0.5rem;
+  }
+  .track-pad-main {
+    min-height: 5rem;
+  }
+  .track-pad-emoji {
+    font-size: 2.25rem;
+  }
+  .track-pad-key {
+    min-height: 3.5rem;
+  }
+}
+
+@media (max-height: 640px) {
+  .track-clock {
+    padding-block: 0.5rem;
+  }
+  .track-shifts {
+    margin-top: 0.5rem;
+  }
+  .track-shifts button {
+    height: 2.25rem;
+  }
+  .track-feed {
+    padding-block: 0.25rem;
+  }
+  .track-feed p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .track-pad-main {
+    min-height: 4rem;
+  }
+  .track-pad-key {
+    min-height: 3rem;
   }
 }
 

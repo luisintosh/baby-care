@@ -21,7 +21,6 @@ import { useSelectedTime } from '@/hooks/use-selected-time'
 import type { useEvents } from '@/hooks/use-events'
 import type { useReminders } from '@/hooks/use-reminders'
 import { kindMeta } from '@/lib/kinds'
-import { cn } from '@/lib/utils'
 import type { BabyEvent, Caregiver, EventKind } from '@/lib/types'
 
 type TrackPageProps = {
@@ -32,17 +31,8 @@ type TrackPageProps = {
 
 export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps) {
   const clock = useSelectedTime()
-  const columnRef = useRef<HTMLDivElement>(null)
-  const logFit = useFitLogRows(
-    columnRef,
-    [
-      remindersApi.active.length,
-      eventsApi.loading ? 1 : 0,
-      eventsApi.events.length,
-      eventsApi.error ? 1 : 0,
-      clock.live ? 1 : 0,
-    ].join(':'),
-  )
+  const logSlotRef = useRef<HTMLDivElement>(null)
+  const logFit = useFitLogRows(logSlotRef, eventsApi.loading ? 0 : eventsApi.events.length)
   const [sleepEvent, setSleepEvent] = useState<BabyEvent | null>(null)
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
@@ -102,13 +92,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   }
 
   return (
-    <div
-      ref={columnRef}
-      className={cn(
-        'flex min-h-0 flex-1 flex-col overflow-hidden',
-        logFit.gap === '1' ? 'gap-1' : logFit.gap === '2' ? 'gap-2' : 'gap-5',
-      )}
-    >
+    <div className="track-stack flex min-h-0 flex-1 flex-col justify-end gap-5 overflow-hidden">
       <ReminderBanner
         reminders={remindersApi.active}
         onComplete={(id) => {
@@ -118,13 +102,16 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
           )
         }}
       />
-      {eventsApi.error ? <p className="text-sm text-destructive">{eventsApi.error}</p> : null}
-      <RecentLog
-        events={eventsApi.events}
-        loading={eventsApi.loading}
-        limit={logFit.rows}
-        onSelect={handleTimelineSelect}
-      />
+      {eventsApi.error ? <p className="shrink-0 text-sm text-destructive">{eventsApi.error}</p> : null}
+      <div ref={logSlotRef} className="min-h-0 flex-1 overflow-hidden">
+        <RecentLog
+          events={eventsApi.events}
+          loading={eventsApi.loading}
+          limit={logFit.rows}
+          archive={logFit.archive}
+          onSelect={handleTimelineSelect}
+        />
+      </div>
       <TimeAdjuster
         value={clock.value}
         live={clock.live}

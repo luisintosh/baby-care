@@ -66,7 +66,7 @@ export function TimeAdjuster({
   }
 
   return (
-    <section className="rounded-[1.75rem] bg-card px-4 py-5">
+    <section className="track-clock shrink-0 rounded-[1.75rem] bg-card px-4 py-5">
       {label ? <p className="mb-2 text-center text-sm text-muted-foreground">{label}</p> : null}
       <button
         type="button"
@@ -74,11 +74,11 @@ export function TimeAdjuster({
         onClick={openPicker}
         aria-label={`Elegir hora, ${formatClock(value)}`}
       >
-        <p className="font-clock text-5xl leading-none font-semibold tracking-tight text-lamp">
+        <p className="track-clock-face font-clock text-5xl leading-none font-semibold tracking-tight text-lamp">
           {formatClock(value)}
         </p>
       </button>
-      <div className="mt-4 grid grid-cols-4 gap-2">
+      <div className="track-shifts mt-4 grid grid-cols-4 gap-2">
         <ShiftKey label="−1 h" onClick={() => onShift(-60)} />
         <ShiftKey label="+1 h" onClick={() => onShift(60)} />
         <ShiftKey label="−10" onClick={() => onShift(-10)} />

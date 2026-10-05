@@ -1,82 +1,93 @@
-import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 'react'
+import { useLayoutEffect, useState, type RefObject } from 'react'
 
-const MAX_LOG_ROWS = 3
-const MIN_LOG_ROWS = 1
+const FALLBACK_ROW = 48
+const FALLBACK_LINK = 48
 
-type Fit = {
+type LogFit = {
   rows: number
-  gap: '5' | '2' | '1'
+  archive: boolean
 }
 
-const LOOSE: Fit = { rows: MAX_LOG_ROWS, gap: '5' }
+const INITIAL_FIT: LogFit = { rows: 3, archive: true }
 
 /**
- * How many recent-log rows fit in a height-locked column.
- * Starts at three and drops one row at a time, never below one.
- * If one row still overflows, the column gap tightens.
+ * How many recent-log rows fit in the flexible slot above the action pad.
+ * The count grows and shrinks with the slot. A row wins over the archive
+ * link when only one of them fits.
  */
-export function useFitLogRows<T extends HTMLElement>(ref: RefObject<T | null>, layoutKey: string) {
-  const [fit, setFit] = useState<Fit>(LOOSE)
-  const [fontsReady, setFontsReady] = useState(() => document.fonts.status === 'loaded')
-  const [epoch, setEpoch] = useState(0)
-  const fitKey = `${layoutKey}:${fontsReady ? 1 : 0}:${epoch}`
-  const fitKeyRef = useRef(fitKey)
-
-  useEffect(() => {
-    if (fontsReady) return
-    let cancelled = false
-    void document.fonts.ready.then(() => {
-      if (!cancelled) setFontsReady(true)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [fontsReady])
-
-  useEffect(() => {
-    const onResize = () => setEpoch((current) => current + 1)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
+export function useFitLogRows(slotRef: RefObject<HTMLElement | null>, eventCount: number) {
+  const [fit, setFit] = useState<LogFit>(INITIAL_FIT)
 
   useLayoutEffect(() => {
-    const el = ref.current
-    if (!el) return
+    const slot = slotRef.current
+    if (!slot) return
 
-    const keyChanged = fitKeyRef.current !== fitKey
-    fitKeyRef.current = fitKey
-    if (keyChanged && (fit.rows !== LOOSE.rows || fit.gap !== LOOSE.gap)) {
-      setFit(LOOSE)
-      return
+    let frame = 0
+    let cancelled = false
+
+    const measure = () => {
+      const next = eventCount === 0 ? { rows: 0, archive: false } : fitRows(slot, eventCount)
+      setFit((current) =>
+        current.rows === next.rows && current.archive === next.archive ? current : next,
+      )
     }
 
-    const stepDown = () => {
-      if (el.clientHeight < 1) return
-      if (el.scrollHeight - el.clientHeight <= 1) return
-      setFit((current) => {
-        if (current.rows > MIN_LOG_ROWS) return { ...current, rows: current.rows - 1 }
-        if (current.gap === '5') return { ...current, gap: '2' }
-        if (current.gap === '2') return { ...current, gap: '1' }
-        return current
-      })
-    }
-
-    stepDown()
-
-    let lastHeight = el.clientHeight
+    measure()
     const observer = new ResizeObserver(() => {
-      const height = el.clientHeight
-      if (height > lastHeight + 1) {
-        lastHeight = height
-        setFit(LOOSE)
-        return
-      }
-      lastHeight = height
-      stepDown()
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(measure)
     })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [fit.gap, fit.rows, fitKey, ref])
+    observer.observe(slot)
+    void document.fonts?.ready.then(() => {
+      if (!cancelled) measure()
+    })
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [eventCount, slotRef])
 
   return fit
+}
+
+function fitRows(slot: HTMLElement, eventCount: number): LogFit {
+  const available = slot.clientHeight
+  if (available < 1) return { rows: 0, archive: false }
+
+  const card = slot.querySelector<HTMLElement>('[data-log-card]')
+  const row = card?.querySelector<HTMLElement>('[data-log-row]')
+  const link = card?.querySelector<HTMLElement>('[data-log-more]')
+  const pad = card ? verticalPadding(card) : 24
+  const rowHeight = row ? outerHeight(row) : FALLBACK_ROW
+  const linkHeight = link ? outerHeight(link) : FALLBACK_LINK
+
+  const countFor = (reserveLink: boolean) => {
+    const space = available - pad - (reserveLink ? linkHeight : 0)
+    if (rowHeight < 1 || space < rowHeight) return 0
+    return Math.floor(space / rowHeight)
+  }
+
+  const bare = Math.min(eventCount, countFor(false))
+  if (eventCount <= bare) return { rows: bare, archive: false }
+
+  const withLink = Math.min(eventCount, countFor(true))
+  if (withLink > 0) return { rows: withLink, archive: true }
+  if (bare > 0) return { rows: bare, archive: false }
+  return { rows: 0, archive: true }
+}
+
+function verticalPadding(element: HTMLElement) {
+  const style = getComputedStyle(element)
+  return parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
+}
+
+function outerHeight(element: HTMLElement) {
+  const style = getComputedStyle(element)
+  return (
+    element.getBoundingClientRect().height +
+    parseFloat(style.marginTop) +
+    parseFloat(style.marginBottom)
+  )
 }
