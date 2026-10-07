@@ -32,7 +32,7 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
   const canToggle = push.support === 'on' || push.support === 'off'
 
   return (
-    <section className="track-feed flex shrink-0 items-center gap-2 rounded-2xl bg-card px-3 py-2">
+    <section className="track-feed flex items-center gap-2">
       <p className="min-w-0 flex-1 text-sm leading-snug">
         {prediction ? nextFeedLabel(prediction) : 'Cuando registres comidas, calculamos la próxima.'}
       </p>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +19,7 @@ type TimeAdjusterProps = {
   onNow: () => void
   onChange: (next: Date) => void
   label?: string
+  children?: ReactNode
 }
 
 function ShiftKey({ label, onClick }: { label: string; onClick: () => void }) {
@@ -49,6 +50,7 @@ export function TimeAdjuster({
   onNow,
   onChange,
   label,
+  children,
 }: TimeAdjusterProps) {
   const [open, setOpen] = useState(false)
   const [hours, setHours] = useState(value.getHours())
@@ -66,7 +68,8 @@ export function TimeAdjuster({
   }
 
   return (
-    <section className="track-clock shrink-0 rounded-[1.75rem] bg-card px-4 py-5">
+    <section className="track-clock shrink-0 rounded-[1.75rem] bg-card px-4 py-4">
+      {children ? <div className="mb-3">{children}</div> : null}
       {label ? <p className="mb-2 text-center text-sm text-muted-foreground">{label}</p> : null}
       <button
         type="button"
@@ -74,11 +77,11 @@ export function TimeAdjuster({
         onClick={openPicker}
         aria-label={`Elegir hora, ${formatClock(value)}`}
       >
-        <p className="track-clock-face font-clock text-5xl leading-none font-semibold tracking-tight text-lamp">
+        <p className="track-clock-face font-clock text-2xl leading-none font-semibold tracking-tight text-lamp tabular-nums">
           {formatClock(value)}
         </p>
       </button>
-      <div className="track-shifts mt-4 grid grid-cols-4 gap-2">
+      <div className="track-shifts mt-3 grid grid-cols-4 gap-2">
         <ShiftKey label="−1 h" onClick={() => onShift(-60)} />
         <ShiftKey label="+1 h" onClick={() => onShift(60)} />
         <ShiftKey label="−10" onClick={() => onShift(-10)} />

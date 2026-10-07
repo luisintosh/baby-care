@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
 import { EventDialogs } from '@/components/EventDialogs'
@@ -16,7 +16,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { useFitLogRows } from '@/hooks/use-fit-log-rows'
 import { useSelectedTime } from '@/hooks/use-selected-time'
 import type { useEvents } from '@/hooks/use-events'
 import type { useReminders } from '@/hooks/use-reminders'
@@ -31,8 +30,6 @@ type TrackPageProps = {
 
 export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps) {
   const clock = useSelectedTime()
-  const logSlotRef = useRef<HTMLDivElement>(null)
-  const logFit = useFitLogRows(logSlotRef, eventsApi.loading ? 0 : eventsApi.events.length)
   const [sleepEvent, setSleepEvent] = useState<BabyEvent | null>(null)
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
@@ -92,7 +89,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   }
 
   return (
-    <div className="track-stack flex min-h-0 flex-1 flex-col justify-end gap-5 overflow-hidden">
+    <div className="track-stack flex min-h-0 flex-1 flex-col justify-end gap-5 overflow-y-auto">
       <ReminderBanner
         reminders={remindersApi.active}
         onComplete={(id) => {
@@ -103,23 +100,20 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         }}
       />
       {eventsApi.error ? <p className="shrink-0 text-sm text-destructive">{eventsApi.error}</p> : null}
-      <div ref={logSlotRef} className="min-h-0 flex-1 overflow-hidden">
-        <RecentLog
-          events={eventsApi.events}
-          loading={eventsApi.loading}
-          limit={logFit.rows}
-          archive={logFit.archive}
-          onSelect={handleTimelineSelect}
-        />
-      </div>
+      <RecentLog
+        events={eventsApi.events}
+        loading={eventsApi.loading}
+        onSelect={handleTimelineSelect}
+      />
       <TimeAdjuster
         value={clock.value}
         live={clock.live}
         onShift={clock.shift}
         onNow={clock.resetToNow}
         onChange={clock.setValue}
-      />
-      <FeedAlert caregiver={caregiver} events={eventsApi.events} />
+      >
+        <FeedAlert caregiver={caregiver} events={eventsApi.events} />
+      </TimeAdjuster>
       <ActionPad
         onSelect={handleSelect}
         openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
