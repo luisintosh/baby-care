@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Luis and Clau are the only users. They are the two caregivers of one baby. Each uses Baby on a phone, including at night and during handoffs. The person holding the phone picks their own name; that choice stays on the device.
+Luis and Clau are the only users. They are the two caregivers of one baby. Each uses Baby on a phone, including at night and during handoffs. A session starts by choosing their name and the shared date. That session stays on the phone until they tap the name.
 
 ## Product Purpose
 
@@ -18,13 +18,13 @@ Success means two things at once: neither person has to ask what just happened, 
 
 ## Positioning
 
-One shared log, two fixed caregivers, no accounts, plus a next-feed time from a shared day and night interval both caregivers can change. A personal journal or a multi-child family product could not truthfully make that claim.
+One shared log, two fixed caregivers, one shared date that opens either account, plus a next-feed time from a shared day and night interval both caregivers can change. A personal journal or a multi-child family product could not truthfully make that claim.
 
 ## Operating Context
 
 The real surface is a phone, portrait, installable from the browser. The interface is Spanish (Mexico). Clocks and the day/night split use America/Mexico_City. Day is 07:00–22:00; everything else is night.
 
-A session starts by choosing Luis or Clau. That name is how each event and each completed aviso is signed.
+A session starts by choosing Luis or Clau and the date. That name is how each event and each completed aviso is signed. The session stays on the phone until the name is tapped.
 
 Logging happens on Registrar. Four actions: Comida, Popó, Sueño, Medicina. Comida and Popó log in one tap. Medicina asks for a note. Sueño opens an interval and closes it later; only one sleep can be open. The clock can be moved off “now” to backdate a log. A fresh log can be undone. The timeline is the handoff: the other person’s events are already there.
 
@@ -39,15 +39,11 @@ The next feed is the last logged feed plus the configured interval for that peri
 Confirmed:
 
 - Caregivers stay Luis and Clau. One baby. No extra people, no second child.
-- No accounts. Identity is the name chosen on that phone.
+- Two accounts share one date passphrase. A session is required to read or write the log.
 - Spanish (Mexico), Mexico City clock, phone-first installable web app.
 - Do not invent a baby name, age, weight, or medical advice.
 - Event kinds are feed, poop, sleep, and medicine. Sleep is the only kind with an end time.
 - The shared log and the next-feed nudge are both the product. Dated avisos support care; they are not a substitute for the feed nudge.
-
-Undecided:
-
-- Whether anyone with the app link may read and write the log. The current database allows anonymous access. That was not accepted as a product constraint, and it was not rejected either.
 
 ## Brand Commitments
 
@@ -62,5 +58,5 @@ The app, its Spanish copy, and the Supabase schema are the record. There is no b
 1. One log, two people. Either caregiver can write, and both read the same events.
 2. The handoff is the job. The other person should not have to be asked what happened.
 3. The next feed comes from the shared day and night schedule, and the nudge still arrives with the phone locked.
-4. The phone in hand is the identity. No accounts, no extra caregivers, no second baby.
+4. The signed-in name is the identity. Two accounts, no extra caregivers, no second baby.
 5. Record care. Do not name the baby, estimate growth, or give medical advice.

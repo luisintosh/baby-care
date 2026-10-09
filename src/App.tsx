@@ -2,32 +2,48 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { UserGate } from '@/components/UserGate'
 import { Toaster } from '@/components/ui/sonner'
-import { useCaregiver } from '@/hooks/use-caregiver'
 import { useEvents } from '@/hooks/use-events'
 import { useReminders } from '@/hooks/use-reminders'
+import { useSession } from '@/hooks/use-session'
+import { caregiverFromSession, signOutCaregiver } from '@/lib/auth'
+import type { Caregiver } from '@/lib/types'
 import { HistoryPage } from '@/pages/HistoryPage'
 import { MetricsPage } from '@/pages/MetricsPage'
 import { RemindersPage } from '@/pages/RemindersPage'
 import { TrackPage } from '@/pages/TrackPage'
 
 export default function App() {
-  const { caregiver, choose, reset } = useCaregiver()
-  const eventsApi = useEvents()
-  const remindersApi = useReminders()
+  const session = useSession()
 
-  if (!caregiver) {
+  if (session === undefined) {
+    return <main className="w-full max-w-md flex-1" />
+  }
+
+  const caregiver = caregiverFromSession(session)
+  if (!session || !caregiver) {
     return (
       <>
-        <UserGate onChoose={choose} />
+        <UserGate />
         <Toaster theme="dark" />
       </>
     )
   }
 
+  return <SignedIn caregiver={caregiver} />
+}
+
+function SignedIn({ caregiver }: { caregiver: Caregiver }) {
+  const eventsApi = useEvents()
+  const remindersApi = useReminders()
+
   return (
     <HashRouter>
       <Routes>
-        <Route element={<AppShell caregiver={caregiver} onChangeUser={reset} />}>
+        <Route
+          element={
+            <AppShell caregiver={caregiver} onChangeUser={() => void signOutCaregiver()} />
+          }
+        >
           <Route
             index
             element={
