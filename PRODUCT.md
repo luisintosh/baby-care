@@ -18,11 +18,11 @@ Success means two things at once: neither person has to ask what just happened, 
 
 ## Positioning
 
-One shared log, two fixed caregivers, no accounts, plus a next-feed time taken from this baby’s own recent day and night gaps. A personal journal, a multi-child family product, or a fixed every-N-hours timer could not truthfully make that claim.
+One shared log, two fixed caregivers, no accounts, plus a next-feed time from a shared day and night interval both caregivers can change. A personal journal or a multi-child family product could not truthfully make that claim.
 
 ## Operating Context
 
-The real surface is a phone, portrait, installable from the browser. The interface is Spanish (Mexico). Clocks and the day/night split use America/Mexico_City. Day is 07:00–20:00; everything else is night.
+The real surface is a phone, portrait, installable from the browser. The interface is Spanish (Mexico). Clocks and the day/night split use America/Mexico_City. Day is 07:00–22:00; everything else is night.
 
 A session starts by choosing Luis or Clau. That name is how each event and each completed aviso is signed.
 
@@ -32,7 +32,7 @@ Métricas shows the current state (last feed, last diaper, sleep, last medicine)
 
 Avisos are dated reminders with a start and end, separate from feed nudges. Either caregiver can mark one done.
 
-The next feed is the median gap between this baby’s recent feeds, split by day and night, over the last 7 days. Gaps under 20 minutes or over 8 hours are ignored. Until a period has three usable gaps, the default is 3 hours by day and 4 hours by night. A push says the feed is due, and a follow-up arrives 30 minutes later if that feed is still unlogged. On iPhone, push requires the app on the Home Screen.
+The next feed is the last logged feed plus the configured interval for that period: one schedule for day and one for night (from 22:00). The default is 4 hours by day and 5 hours by night; either caregiver can change both from Registrar. A push says the feed is due, and a follow-up arrives 30 minutes later if that feed is still unlogged. On iPhone, push requires the app on the Home Screen.
 
 ## Capabilities and Constraints
 
@@ -61,6 +61,6 @@ The app, its Spanish copy, and the Supabase schema are the record. There is no b
 
 1. One log, two people. Either caregiver can write, and both read the same events.
 2. The handoff is the job. The other person should not have to be asked what happened.
-3. The next feed comes from this baby’s recent day and night rhythm, and the nudge still arrives with the phone locked.
+3. The next feed comes from the shared day and night schedule, and the nudge still arrives with the phone locked.
 4. The phone in hand is the identity. No accounts, no extra caregivers, no second baby.
 5. Record care. Do not name the baby, estimate growth, or give medical advice.

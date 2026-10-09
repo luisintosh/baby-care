@@ -2,14 +2,14 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2'
 import * as webpush from 'jsr:@negrel/webpush@0.5.0'
 import {
+  DEFAULT_FEED_INTERVALS,
   dueFeedAlert,
   nextFeed,
   type FeedAlert,
   type FeedAlertState,
+  type FeedIntervals,
   type FeedPoint,
 } from '../../../src/lib/feed-schedule.ts'
-
-const LOOKBACK_MS = 8 * 24 * 60 * 60 * 1000
 
 type SubscriptionRow = {
   endpoint: string
@@ -143,14 +143,7 @@ Deno.serve(async (req) => {
     if (targets.length === 0) return json({ sent: false, reason: 'no-subscriptions' })
 
     const now = new Date()
-    const since = new Date(now.getTime() - LOOKBACK_MS).toISOString()
-    const [windowResult, latestResult, stateResult] = await Promise.all([
-      supabase
-        .from('events')
-        .select('id, occurred_at')
-        .eq('kind', 'feed')
-        .gte('occurred_at', since)
-        .order('occurred_at', { ascending: true }),
+    const [latestResult, scheduleResult, stateResult] = await Promise.all([
       supabase
         .from('events')
         .select('id, occurred_at')
@@ -159,24 +152,35 @@ Deno.serve(async (req) => {
         .order('occurred_at', { ascending: false })
         .limit(1),
       supabase
+        .from('feed_schedule')
+        .select('day_minutes, night_minutes')
+        .eq('id', 1)
+        .maybeSingle(),
+      supabase
         .from('feed_alert_state')
         .select('notified_feed_id, followup_feed_id')
         .eq('id', 1)
         .maybeSingle(),
     ])
-    if (windowResult.error) throw windowResult.error
     if (latestResult.error) throw latestResult.error
+    if (scheduleResult.error) throw scheduleResult.error
     if (stateResult.error) throw stateResult.error
 
-    const points = new Map<number, FeedPoint>()
-    for (const row of [...(windowResult.data ?? []), ...(latestResult.data ?? [])]) {
-      points.set(row.id, { id: row.id, occurredAt: new Date(row.occurred_at) })
-    }
+    const latest = latestResult.data?.[0]
+    const points: FeedPoint[] = latest
+      ? [{ id: latest.id, occurredAt: new Date(latest.occurred_at) }]
+      : []
+    const intervals: FeedIntervals = scheduleResult.data
+      ? {
+          dayMinutes: scheduleResult.data.day_minutes,
+          nightMinutes: scheduleResult.data.night_minutes,
+        }
+      : DEFAULT_FEED_INTERVALS
     const state: FeedAlertState = {
       notifiedFeedId: stateResult.data?.notified_feed_id ?? null,
       followupFeedId: stateResult.data?.followup_feed_id ?? null,
     }
-    const alert = dueFeedAlert(nextFeed([...points.values()], now), state, now)
+    const alert = dueFeedAlert(nextFeed(points, intervals, now), state, now)
     if (!alert) return json({ sent: false, reason: 'not-due' })
 
     const server = await applicationServer()
