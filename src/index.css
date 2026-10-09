@@ -162,54 +162,15 @@ html.standalone .gate-pad {
   padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
 }
 
-@media (max-height: 760px) {
-  .track-stack {
-    gap: 0.5rem;
-  }
-  .track-clock {
-    padding-block: 0.75rem;
-  }
-  .track-shifts {
-    margin-top: 0.75rem;
-  }
-  .track-pad {
-    gap: 0.5rem;
-  }
-  .track-pad-main {
-    min-height: 5rem;
-  }
-  .track-pad-emoji {
-    font-size: 2.25rem;
-  }
-  .track-pad-key {
-    min-height: 3.5rem;
-  }
+.registrar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.78 0.13 75 / 0.35) transparent;
 }
 
-@media (max-height: 640px) {
-  .track-clock {
-    padding-block: 0.5rem;
-  }
-  .track-shifts {
-    margin-top: 0.5rem;
-  }
-  .track-shifts button {
-    height: 2.25rem;
-  }
-  .track-feed {
-    padding-block: 0.25rem;
-  }
-  .track-feed p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .track-pad-main {
-    min-height: 4rem;
-  }
-  .track-pad-key {
-    min-height: 3rem;
-  }
+.night-sheet {
+  left: 50%;
+  width: min(100%, 28rem);
+  margin-left: calc(min(100%, 28rem) / -2);
 }
 
 .pad-glow:active {

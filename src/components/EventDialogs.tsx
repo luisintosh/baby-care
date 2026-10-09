@@ -1,14 +1,6 @@
 import { toast } from 'sonner'
+import { NightSheet, SheetButton } from '@/components/NightSheet'
 import { SleepEditor } from '@/components/SleepEditor'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { kindMeta } from '@/lib/kinds'
 import type { BabyEvent } from '@/lib/types'
 import type { useEvents } from '@/hooks/use-events'
@@ -47,33 +39,32 @@ export function EventDialogs({
         }}
       />
 
-      <Dialog open={Boolean(deleting)} onOpenChange={onDeletingOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>¿Borrar este registro?</DialogTitle>
-            <DialogDescription>
-              {deleting ? `${kindMeta(deleting.kind).past} no se podrá recuperar.` : ''}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="destructive"
-              className="h-11 rounded-xl"
-              onClick={() => {
-                if (!deleting) return
-                void eventsApi.deleteEvent(deleting.id).then(
-                  () => toast.success('Borrado'),
-                  (error: unknown) =>
-                    toast.error(error instanceof Error ? error.message : 'No se pudo borrar'),
-                )
-                onDeletingOpenChange(false)
-              }}
-            >
-              Borrar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <NightSheet
+        open={Boolean(deleting)}
+        onOpenChange={onDeletingOpenChange}
+        autoFocus={false}
+        title="¿Borrar este registro?"
+        description={
+          deleting
+            ? `${kindMeta(deleting.kind).past} no se podrá recuperar.`
+            : 'Este registro no se podrá recuperar.'
+        }
+      >
+        <SheetButton
+          tone="danger"
+          onClick={() => {
+            if (!deleting) return
+            void eventsApi.deleteEvent(deleting.id).then(
+              () => toast.success('Borrado'),
+              (error: unknown) =>
+                toast.error(error instanceof Error ? error.message : 'No se pudo borrar'),
+            )
+            onDeletingOpenChange(false)
+          }}
+        >
+          Borrar
+        </SheetButton>
+      </NightSheet>
     </>
   )
 }

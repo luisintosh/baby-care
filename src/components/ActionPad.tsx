@@ -20,21 +20,21 @@ export function ActionPad({ onSelect, openSleepSince, lastAtByKind }: ActionPadP
   const feedSince = sinceLabel(lastAtByKind[feed.id])
 
   return (
-    <div className="track-pad flex shrink-0 flex-col gap-3">
+    <div className="flex shrink-0 flex-col gap-3">
       <button
         type="button"
         onClick={() => onSelect(feed.id)}
         aria-label={feedSince ? `${feed.label}, ${feedSince}` : feed.label}
-        className="track-pad-main pad-glow flex min-h-24 w-full flex-col items-center justify-center gap-1.5 rounded-[2rem] bg-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px"
+        className="pad-glow flex min-h-24 w-full flex-col items-center justify-center gap-1.5 rounded-[2rem] bg-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px"
       >
-        <span className="track-pad-emoji text-5xl leading-none" aria-hidden>
+        <span className="text-5xl leading-none" aria-hidden>
           {feed.emoji}
         </span>
         {feedSince ? (
           <span className="text-[11px] leading-none text-muted-foreground">{feedSince}</span>
         ) : null}
       </button>
-      <div className="grid grid-cols-3 gap-3 px-4">
+      <div className="grid grid-cols-3 gap-3">
         {rest.map((kind) => {
           const sleeping = kind.id === 'sleep' && openSleepSince
           const since = sinceLabel(lastAtByKind[kind.id])
@@ -51,7 +51,7 @@ export function ActionPad({ onSelect, openSleepSince, lastAtByKind }: ActionPadP
                     : kind.label
               }
               className={cn(
-                'track-pad-key pad-glow flex min-h-16 flex-col items-center justify-center gap-1 rounded-[1.35rem] bg-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
+                'pad-glow flex min-h-16 flex-col items-center justify-center gap-1 rounded-[1.35rem] bg-card outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
                 sleeping && 'is-sleeping ring-1 ring-lamp/50',
               )}
             >

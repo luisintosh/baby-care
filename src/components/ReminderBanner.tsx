@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { formatRange } from '@/lib/format'
 import type { Reminder } from '@/lib/types'
 
@@ -23,14 +22,13 @@ export function ReminderBanner({ reminders, onComplete }: ReminderBannerProps) {
               {formatRange(reminder.starts_on, reminder.ends_on)}
             </p>
           </div>
-          <Button
+          <button
             type="button"
-            size="lg"
-            className="h-11 rounded-full bg-primary-foreground px-4 text-background hover:bg-primary-foreground/90"
+            className="min-h-11 shrink-0 rounded-full bg-background px-4 text-sm text-foreground outline-none focus-visible:ring-3 focus-visible:ring-background/40 active:translate-y-px"
             onClick={() => onComplete(reminder.id)}
           >
             Hecho
-          </Button>
+          </button>
         </article>
       ))}
     </div>

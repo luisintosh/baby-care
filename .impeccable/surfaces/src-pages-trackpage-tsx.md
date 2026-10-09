@@ -19,7 +19,7 @@ OWN-WORLD: Warm near-black #1C1612, card #3A322C, lamp gold #E4B15C, very round 
 
 STORY: You read the last three logs in columns, then the time you are about to stamp. You tap the bottle. Popó, sueño, and medicina are smaller emoji keys. Older logs are one link away.
 
-FIRST VIEWPORT: Gold aviso only when one is due. One rounded card, exactly three rows: emoji, time, name, with a note under the time. Ver anteriores. One stamp band: next-feed caption, a small gold clock, −1 h, +1 h, −10, +10. A wide rounded button whose face is 🍼. Three smaller rounds: 💩 😴 💊.
+FIRST VIEWPORT: Gold aviso only when one is due, in the scrolling zone with the last three rows. Ver anteriores. Pinned stamp: next-feed caption and a small gold clock. Tapping the clock opens −1 h, +1 h, −10, +10 and the hour picker. A wide rounded button whose face is 🍼. Three smaller rounds: 💩 😴 💊.
 
 FORM: Ledger, then stamp. Fixed last three and a compact clock. Revises the stretching mixed list. Seed e561d95d.
 

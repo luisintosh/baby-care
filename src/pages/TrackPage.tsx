@@ -3,19 +3,10 @@ import { toast } from 'sonner'
 import { ActionPad } from '@/components/ActionPad'
 import { EventDialogs } from '@/components/EventDialogs'
 import { FeedAlert } from '@/components/FeedAlert'
+import { NightSheet, SheetButton } from '@/components/NightSheet'
 import { RecentLog } from '@/components/RecentLog'
 import { ReminderBanner } from '@/components/ReminderBanner'
-import { TimeAdjuster } from '@/components/TimeAdjuster'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
+import { TimeSheet, TimeStamp } from '@/components/TimeSheet'
 import { useSelectedTime } from '@/hooks/use-selected-time'
 import type { useEvents } from '@/hooks/use-events'
 import type { useReminders } from '@/hooks/use-reminders'
@@ -30,6 +21,7 @@ type TrackPageProps = {
 
 export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps) {
   const clock = useSelectedTime()
+  const [timeOpen, setTimeOpen] = useState(false)
   const [sleepEvent, setSleepEvent] = useState<BabyEvent | null>(null)
   const [pendingKind, setPendingKind] = useState<EventKind | null>(null)
   const [note, setNote] = useState('')
@@ -89,35 +81,46 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   }
 
   return (
-    <div className="track-stack flex min-h-0 flex-1 flex-col justify-end gap-5 overflow-y-auto">
-      <ReminderBanner
-        reminders={remindersApi.active}
-        onComplete={(id) => {
-          void remindersApi.completeReminder(id, caregiver).then(
-            () => toast.success('Listo, se oculta el aviso'),
-            (error: unknown) => toast.error(error instanceof Error ? error.message : 'No se pudo marcar'),
-          )
-        }}
-      />
-      {eventsApi.error ? <p className="shrink-0 text-sm text-destructive">{eventsApi.error}</p> : null}
-      <RecentLog
-        events={eventsApi.events}
-        loading={eventsApi.loading}
-        onSelect={handleTimelineSelect}
-      />
-      <TimeAdjuster
+    <div className="flex min-h-0 flex-1 flex-col gap-4">
+      <div className="registrar-scroll flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-y-contain pb-1">
+        <ReminderBanner
+          reminders={remindersApi.active}
+          onComplete={(id) => {
+            void remindersApi.completeReminder(id, caregiver).then(
+              () => toast.success('Listo, se oculta el aviso'),
+              (error: unknown) => toast.error(error instanceof Error ? error.message : 'No se pudo marcar'),
+            )
+          }}
+        />
+        {eventsApi.error ? <p className="shrink-0 text-sm text-destructive">{eventsApi.error}</p> : null}
+        <RecentLog
+          events={eventsApi.events}
+          loading={eventsApi.loading}
+          onSelect={handleTimelineSelect}
+        />
+      </div>
+      <div className="flex shrink-0 flex-col gap-3 pb-2">
+        <FeedAlert caregiver={caregiver} events={eventsApi.events} />
+        <TimeStamp
+          value={clock.value}
+          live={clock.live}
+          onOpen={() => setTimeOpen(true)}
+          onNow={clock.resetToNow}
+        />
+        <ActionPad
+          onSelect={handleSelect}
+          openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
+          lastAtByKind={lastAtByKind}
+        />
+      </div>
+      <TimeSheet
+        open={timeOpen}
+        onOpenChange={setTimeOpen}
         value={clock.value}
         live={clock.live}
         onShift={clock.shift}
-        onNow={clock.resetToNow}
         onChange={clock.setValue}
-      >
-        <FeedAlert caregiver={caregiver} events={eventsApi.events} />
-      </TimeAdjuster>
-      <ActionPad
-        onSelect={handleSelect}
-        openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
-        lastAtByKind={lastAtByKind}
+        onNow={clock.resetToNow}
       />
       <EventDialogs
         eventsApi={eventsApi}
@@ -131,36 +134,30 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         }}
       />
 
-      <Dialog
+      <NightSheet
         open={pendingKind === 'medicine'}
         onOpenChange={(open) => {
           if (!open) setPendingKind(null)
         }}
+        title="Medicina 💊"
+        description="La nota es opcional. Puedes guardar en blanco."
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Medicina 💊</DialogTitle>
-            <DialogDescription>La nota es opcional. Puedes guardar en blanco.</DialogDescription>
-          </DialogHeader>
-          <Textarea
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder="Cuál, dosis…"
-            className="min-h-24"
-          />
-          <DialogFooter>
-            <Button
-              className="h-11 rounded-xl"
-              onClick={() => {
-                void logKind('medicine', note.trim() || null)
-                setPendingKind(null)
-              }}
-            >
-              Registrar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        <textarea
+          value={note}
+          onChange={(event) => setNote(event.target.value)}
+          placeholder="Cuál, dosis…"
+          rows={3}
+          className="min-h-24 w-full resize-none rounded-2xl bg-secondary px-3 py-3 text-base text-foreground caret-lamp outline-none selection:bg-lamp/30 placeholder:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+        />
+        <SheetButton
+          onClick={() => {
+            void logKind('medicine', note.trim() || null)
+            setPendingKind(null)
+          }}
+        >
+          Registrar
+        </SheetButton>
+      </NightSheet>
     </div>
   )
 }

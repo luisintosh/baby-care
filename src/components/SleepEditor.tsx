@@ -1,16 +1,9 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
-import { TimeAdjuster } from '@/components/TimeAdjuster'
-import { addDays, addMinutes, startOfLocalDay } from '@/lib/format'
+import { NightSheet, SheetButton } from '@/components/NightSheet'
+import { TimeSheet } from '@/components/TimeSheet'
+import { addDays, addMinutes, formatClock, startOfLocalDay } from '@/lib/format'
+import { cn } from '@/lib/utils'
 import type { BabyEvent } from '@/lib/types'
 
 type SleepEditorProps = {
@@ -26,6 +19,7 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
   const [end, setEnd] = useState<Date | null>(null)
   const [endDayOffset, setEndDayOffset] = useState(0)
   const [saving, setSaving] = useState(false)
+  const [editing, setEditing] = useState<'start' | 'end' | null>(null)
 
   useEffect(() => {
     if (!event) return
@@ -37,9 +31,13 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
       (startOfLocalDay(eventEnd).getTime() - startOfLocalDay(eventStart).getTime()) / 86_400_000,
     )
     setEndDayOffset(dayDiff)
+    setEditing(null)
   }, [event])
 
   if (!event) return null
+
+  const endValue = end ?? addDays(start, endDayOffset)
+  const editingStart = editing === 'start'
 
   async function save(nextEnd: Date | null) {
     if (!event) return
@@ -74,89 +72,95 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
   function shiftEndDay(delta: number) {
     const next = endDayOffset + delta
     setEndDayOffset(next)
-    if (end) {
-      setEnd(addDays(end, delta))
-    }
+    if (end) setEnd(addDays(end, delta))
   }
 
-  function setEndWithOffset(date: Date) {
-    setEnd(addDays(date, endDayOffset))
+  function dayLabel() {
+    if (endDayOffset === 0) return 'Mismo día'
+    return `+${endDayOffset} día${endDayOffset > 1 ? 's' : ''}`
   }
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[92dvh] overflow-y-auto rounded-t-3xl">
-        <SheetHeader>
-          <SheetTitle>Sueño 😴</SheetTitle>
-          <SheetDescription>Ajusta el inicio y registra cuándo despertó.</SheetDescription>
-        </SheetHeader>
-        <div className="flex flex-col gap-4 px-4 pb-4">
-          <TimeAdjuster
-            label="Inicio"
-            value={start}
-            onShift={(minutes) => setStart(addMinutes(start, minutes))}
-            onNow={() => setStart(new Date())}
-            onChange={setStart}
-          />
-          <TimeAdjuster
-            label="Despertar"
-            value={end ?? addDays(start, endDayOffset)}
-            onShift={(minutes) => setEnd(addMinutes(end ?? addDays(start, endDayOffset), minutes))}
-            onNow={() => setEnd(new Date())}
-            onChange={setEndWithOffset}
-          />
-          <div className="flex items-center justify-center gap-2">
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="h-9 rounded-xl text-xs"
-              disabled={endDayOffset <= 0}
-              onClick={() => shiftEndDay(-1)}
-            >
-              −1 día
-            </Button>
-            <span className="min-w-[4rem] text-center text-xs text-muted-foreground">
-              {endDayOffset === 0 ? 'Mismo día' : `+${endDayOffset} día${endDayOffset > 1 ? 's' : ''}`}
-            </span>
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="h-9 rounded-xl text-xs"
-              disabled={endDayOffset >= 3}
-              onClick={() => shiftEndDay(1)}
-            >
-              +1 día
-            </Button>
-          </div>
+    <>
+      <NightSheet
+        open={open}
+        onOpenChange={(next) => {
+          if (!next) setEditing(null)
+          onOpenChange(next)
+        }}
+        title="Sueño 😴"
+        description="Ajusta el inicio y registra cuándo despertó."
+      >
+        <TimeRow label="Inicio" value={start} onClick={() => setEditing('start')} />
+        <TimeRow label="Despertar" value={endValue} onClick={() => setEditing('end')} />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            disabled={endDayOffset <= 0 || saving}
+            onClick={() => shiftEndDay(-1)}
+            className="min-h-12 flex-1 rounded-2xl bg-secondary text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40"
+          >
+            −1 día
+          </button>
+          <span className="min-w-20 text-center text-sm text-muted-foreground">{dayLabel()}</span>
+          <button
+            type="button"
+            disabled={endDayOffset >= 3 || saving}
+            onClick={() => shiftEndDay(1)}
+            className="min-h-12 flex-1 rounded-2xl bg-secondary text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40"
+          >
+            +1 día
+          </button>
         </div>
-        <SheetFooter className="gap-2">
-          <Button
-            className="h-12 rounded-2xl"
-            disabled={saving}
-            onClick={() => void save(end ?? new Date())}
-          >
-            Guardar despertar
-          </Button>
-          <Button
-            variant="secondary"
-            className="h-12 rounded-2xl"
-            disabled={saving}
-            onClick={() => void save(null)}
-          >
-            Sigue durmiendo
-          </Button>
-          <Button
-            variant="destructive"
-            className="h-12 rounded-2xl"
-            disabled={saving}
-            onClick={() => void remove()}
-          >
-            Borrar
-          </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        <SheetButton disabled={saving} onClick={() => void save(end ?? new Date())}>
+          Guardar despertar
+        </SheetButton>
+        <SheetButton tone="secondary" disabled={saving} onClick={() => void save(null)}>
+          Sigue durmiendo
+        </SheetButton>
+        <SheetButton tone="danger" disabled={saving} onClick={() => void remove()}>
+          Borrar
+        </SheetButton>
+      </NightSheet>
+      <TimeSheet
+        open={editing !== null}
+        onOpenChange={(next) => {
+          if (!next) setEditing(null)
+        }}
+        title={editingStart ? 'Inicio' : 'Despertar'}
+        raised
+        value={editingStart ? start : endValue}
+        onShift={(minutes) => {
+          if (editingStart) setStart(addMinutes(start, minutes))
+          else setEnd(addMinutes(endValue, minutes))
+        }}
+        onChange={(next) => {
+          if (editingStart) setStart(next)
+          else setEnd(next)
+        }}
+        onNow={() => {
+          const next = new Date()
+          if (editingStart) setStart(next)
+          else setEnd(next)
+        }}
+      />
+    </>
+  )
+}
+
+function TimeRow({ label, value, onClick }: { label: string; value: Date; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'flex min-h-14 w-full items-center justify-between rounded-2xl bg-secondary px-4 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
+      )}
+    >
+      <span>{label}</span>
+      <span className="font-clock text-2xl leading-none font-semibold text-lamp tabular-nums">
+        {formatClock(value)}
+      </span>
+    </button>
   )
 }
