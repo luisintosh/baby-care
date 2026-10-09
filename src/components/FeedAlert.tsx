@@ -14,7 +14,6 @@ import {
   type FeedIntervals,
 } from '@/lib/feed-schedule'
 import { formatDuration } from '@/lib/format'
-import { cn } from '@/lib/utils'
 import type { BabyEvent, Caregiver } from '@/lib/types'
 
 type FeedAlertProps = {
@@ -45,8 +44,8 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
     [events, schedule.intervals],
   )
   const hint = hintFor(push.support)
-  const canToggle = push.support === 'on' || push.support === 'off' || push.support === 'ios-install'
-  const on = push.support === 'on'
+  const showActivate =
+    push.support === 'off' || push.support === 'ios-install'
 
   return (
     <section className="flex flex-col items-center gap-1 text-center">
@@ -66,10 +65,10 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
       >
         Cambiar horario
       </button>
-      {canToggle ? (
+      {showActivate ? (
         <button
           type="button"
-          aria-pressed={on}
+          aria-pressed={false}
           aria-describedby={hint ? 'feed-alert-hint' : undefined}
           disabled={push.busy}
           onClick={() => {
@@ -77,14 +76,11 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
               toast.error(error instanceof Error ? error.message : 'No se pudieron cambiar los avisos')
             })
           }}
-          className={cn(
-            'h-7 rounded-full px-2.5 text-xs outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40',
-            on ? 'text-muted-foreground' : 'bg-secondary text-lamp',
-          )}
+          className="h-7 rounded-full px-2.5 text-xs outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40 bg-secondary text-lamp"
         >
-          {on ? 'Avisos activos' : 'Activar avisos'}
+          Activar avisos
         </button>
-      ) : hint ? (
+      ) : push.support !== 'on' && hint ? (
         <p className="text-sm leading-snug text-muted-foreground">{hint}</p>
       ) : null}
       {hint ? (
