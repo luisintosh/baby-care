@@ -28,9 +28,9 @@ A session starts by choosing Luis or Clau and the date. That name is how each ev
 
 Logging happens on Registrar. Four actions: Comida, Popó, Sueño, Medicina. Comida and Popó log in one tap. Medicina asks for a note. Sueño opens an interval and closes it later; only one sleep can be open. The clock can be moved off “now” to backdate a log. A fresh log can be undone. The timeline is the handoff: the other person’s events are already there.
 
-Métricas shows the current state (last feed, last diaper, sleep, last medicine), today’s counts, and a 7-day trend once there is enough history.
+Métricas shows the baby’s age and birth date, the current state (last feed, last diaper, sleep, today’s medicine), today’s counts against yesterday at the same hour, and a 7-day trend once there is enough history.
 
-Avisos are dated reminders with a start and end, separate from feed nudges. Either caregiver can mark one done.
+Pendientes (the tab; each item is an aviso) are dated reminders with a start and end, separate from the feed push alerts. Either caregiver can mark one done.
 
 The next feed is the last logged feed plus the configured interval for that period: one schedule for day and one for night (from 22:00). The default is 4 hours by day and 5 hours by night; either caregiver can change both from Registrar. A push says the feed is due, and a follow-up arrives 30 minutes later if that feed is still unlogged. On iPhone, push requires the app on the Home Screen.
 
@@ -41,7 +41,7 @@ Confirmed:
 - Caregivers stay Luis and Clau. One baby. No extra people, no second child.
 - Two accounts share one date passphrase. A session is required to read or write the log.
 - Spanish (Mexico), Mexico City clock, phone-first installable web app.
-- Do not invent a baby name, age, weight, or medical advice.
+- Do not invent a baby name, weight, or medical advice. Age is computed from the real birth date in `src/lib/baby.ts`; nothing else about the baby is recorded.
 - Event kinds are feed, poop, sleep, and medicine. Sleep is the only kind with an end time.
 - The shared log and the next-feed nudge are both the product. Dated avisos support care; they are not a substitute for the feed nudge.
 
@@ -51,7 +51,7 @@ The product name is Baby. The interface speaks informal Spanish, in the tú form
 
 ## Evidence on Hand
 
-The app, its Spanish copy, and the Supabase schema are the record. There is no baby name, age, weight, photo, testimonial, or medical guidance in the project. Do not fabricate any of them.
+The app, its Spanish copy, and the Supabase schema are the record. The birth date (and the age computed from it) is real and in the project. There is no baby name, weight, photo, testimonial, or medical guidance. Do not fabricate any of them.
 
 ## Product Principles
 
@@ -60,3 +60,4 @@ The app, its Spanish copy, and the Supabase schema are the record. There is no b
 3. The next feed comes from the shared day and night schedule, and the nudge still arrives with the phone locked.
 4. The signed-in name is the identity. Two accounts, no extra caregivers, no second baby.
 5. Record care. Do not name the baby, estimate growth, or give medical advice.
+6. Night first. The palette dims from 22:00 to 07:00, a late feed is the loudest thing on screen, and every one-tap action can be undone.

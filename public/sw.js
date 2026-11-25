@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cuna-v2'
+const CACHE_NAME = 'cuna-v3'
 
 self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting())
@@ -31,7 +31,7 @@ self.addEventListener('push', (event) => {
       badge: new URL('pwa-64x64.png', scope).href,
       tag: payload.tag || 'feed-due',
       renotify: true,
-      lang: 'es',
+      lang: 'es-MX',
       data: { url: scope },
     }),
   )

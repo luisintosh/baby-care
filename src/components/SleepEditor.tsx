@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { NightSheet, SheetButton } from '@/components/NightSheet'
+import { ConfirmDelete, NightSheet, SheetButton } from '@/components/NightSheet'
 import { TimeSheet } from '@/components/TimeSheet'
-import { addDays, addMinutes, formatClock, startOfLocalDay } from '@/lib/format'
+import { friendlyError } from '@/lib/errors'
+import { addDays, addMinutes, formatClock, formatDuration, startOfLocalDay } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { BabyEvent } from '@/lib/types'
 
@@ -50,7 +51,7 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
       await onSave(event.id, start, nextEnd)
       onOpenChange(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'No se pudo guardar')
+      toast.error(friendlyError(error, 'No se pudo guardar'))
     } finally {
       setSaving(false)
     }
@@ -62,8 +63,8 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
     try {
       await onDelete(event.id)
       onOpenChange(false)
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'No se pudo borrar')
+    } catch {
+      // onDelete already told the user.
     } finally {
       setSaving(false)
     }
@@ -89,7 +90,12 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
           onOpenChange(next)
         }}
         title="Sueño 😴"
-        description="Ajusta el inicio y registra cuándo despertó."
+        description={
+          event.ended_at
+            ? `Durmió ${formatDuration(endValue.getTime() - start.getTime())}. Ajusta el inicio o el despertar.`
+            : 'Ajusta el inicio y registra cuándo despertó.'
+        }
+        headerAction={<ConfirmDelete disabled={saving} onConfirm={() => void remove()} />}
       >
         <TimeRow label="Inicio" value={start} onClick={() => setEditing('start')} />
         <TimeRow label="Despertar" value={endValue} onClick={() => setEditing('end')} />
@@ -112,14 +118,13 @@ export function SleepEditor({ event, open, onOpenChange, onSave, onDelete }: Sle
             +1 día
           </button>
         </div>
+        {event.ended_at ? null : (
+          <SheetButton tone="secondary" disabled={saving} onClick={() => void save(null)}>
+            Sigue dormida
+          </SheetButton>
+        )}
         <SheetButton disabled={saving} onClick={() => void save(end ?? new Date())}>
-          Guardar despertar
-        </SheetButton>
-        <SheetButton tone="secondary" disabled={saving} onClick={() => void save(null)}>
-          Sigue durmiendo
-        </SheetButton>
-        <SheetButton tone="danger" disabled={saving} onClick={() => void remove()}>
-          Borrar
+          {saving ? 'Guardando…' : event.ended_at ? 'Guardar' : 'Guardar despertar'}
         </SheetButton>
       </NightSheet>
       <TimeSheet
@@ -153,12 +158,13 @@ function TimeRow({ label, value, onClick }: { label: string; value: Date; onClic
     <button
       type="button"
       onClick={onClick}
+      aria-label={`${label}, ${formatClock(value)}. Toca para cambiar`}
       className={cn(
         'flex min-h-14 w-full items-center justify-between rounded-2xl bg-secondary px-4 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
       )}
     >
       <span>{label}</span>
-      <span className="font-clock text-2xl leading-none font-semibold text-lamp tabular-nums">
+      <span className="font-clock text-2xl leading-none font-semibold text-lamp">
         {formatClock(value)}
       </span>
     </button>

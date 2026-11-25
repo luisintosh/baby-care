@@ -1,35 +1,43 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { BellOff, BellRing, ChevronDown, ChevronRight, ChevronUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { NightSheet, SheetButton } from '@/components/NightSheet'
 import { useFeedSchedule } from '@/hooks/use-feed-schedule'
 import { usePushSubscription } from '@/hooks/use-push-subscription'
+import { friendlyError } from '@/lib/errors'
 import {
   INTERVAL_STEP_MINUTES,
   MAX_INTERVAL_MINUTES,
   MIN_INTERVAL_MINUTES,
   clampIntervalMinutes,
+  formatFeedClock,
   nextFeed,
-  nextFeedLabel,
+  nextFeedStatus,
   type FeedIntervals,
+  type NextFeed,
 } from '@/lib/feed-schedule'
-import { formatDuration } from '@/lib/format'
+import { formatDuration, formatElapsed } from '@/lib/format'
 import type { BabyEvent, Caregiver } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
 type FeedAlertProps = {
   caregiver: Caregiver
   events: BabyEvent[]
+  /** While the log is loading or failed, "no feed yet" would be a lie. */
+  ready: boolean
 }
 
-function hintFor(support: ReturnType<typeof usePushSubscription>['support']) {
-  if (support === 'ios-install') return null
-  if (support === 'unsupported') return 'Este navegador no puede recibir avisos.'
-  if (support === 'denied') return 'Los avisos están bloqueados en el navegador.'
-  if (support === 'on') return 'Te avisamos 15 minutos antes de la próxima comida.'
-  return 'Activa los avisos para que lleguen con el teléfono bloqueado.'
+type PushSupport = ReturnType<typeof usePushSubscription>['support']
+
+function pushHint(support: PushSupport) {
+  if (support === 'ios-install') return 'Para recibir alertas con el teléfono bloqueado, agrega Baby a tu pantalla de inicio.'
+  if (support === 'unsupported') return 'Este navegador no puede recibir alertas.'
+  if (support === 'denied') return 'Las alertas están bloqueadas en los ajustes del navegador.'
+  if (support === 'on') return 'Alertas de comida activas: te avisamos 15 min antes y otra vez si pasan 30 min.'
+  return 'Activa las alertas para que lleguen con el teléfono bloqueado.'
 }
 
-export function FeedAlert({ caregiver, events }: FeedAlertProps) {
+export function FeedAlert({ caregiver, events, ready }: FeedAlertProps) {
   const push = usePushSubscription(caregiver)
   const schedule = useFeedSchedule()
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -43,62 +51,70 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
       ),
     [events, schedule.intervals],
   )
-  const hint = hintFor(push.support)
-  const showActivate =
-    push.support === 'off' || push.support === 'ios-install'
+
+  function togglePush() {
+    void push.toggle().catch((error: unknown) => {
+      toast.error(friendlyError(error, 'No se pudieron cambiar las alertas'))
+    })
+  }
 
   return (
-    <section className="flex flex-col items-center gap-1 text-center">
+    <section aria-label="Próxima comida" className="flex items-stretch gap-2">
       <button
         type="button"
         onClick={() => setSheetOpen(true)}
-        className="rounded-2xl px-2 py-1 text-sm leading-snug outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:bg-white/5"
+        className={cn(
+          'flex min-h-14 flex-1 items-center justify-between gap-2 rounded-2xl px-4 py-1.5 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
+          prediction && ready && nextFeedStatus(prediction) === 'late'
+            ? 'border border-due/50 bg-due/15'
+            : 'border border-transparent bg-card/60',
+        )}
       >
-        {prediction
-          ? nextFeedLabel(prediction)
-          : 'Cuando registres una comida, marcamos la próxima.'}
+        {ready ? (
+          prediction ? (
+            <NextFeedLine next={prediction} pushOn={push.support === 'on'} />
+          ) : (
+            <span className="text-sm text-muted-foreground">
+              Registra una comida y calculamos la próxima.
+            </span>
+          )
+        ) : (
+          <span className="h-5 w-40 rounded-md bg-foreground/5" aria-hidden />
+        )}
+        <span className="flex shrink-0 items-center text-muted-foreground">
+          <span className="sr-only">Cambiar horario</span>
+          <ChevronRight className="size-5" aria-hidden />
+        </span>
       </button>
-      <button
-        type="button"
-        onClick={() => setSheetOpen(true)}
-        className="h-7 rounded-full px-2.5 text-xs text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px"
-      >
-        Cambiar horario
-      </button>
-      {showActivate ? (
+      {push.support === 'off' || push.support === 'ios-install' ? (
         <button
           type="button"
-          aria-pressed={false}
-          aria-describedby={hint ? 'feed-alert-hint' : undefined}
           disabled={push.busy}
-          onClick={() => {
-            void push.toggle().catch((error: unknown) => {
-              toast.error(error instanceof Error ? error.message : 'No se pudieron cambiar los avisos')
-            })
-          }}
-          className="h-7 rounded-full px-2.5 text-xs outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40 bg-secondary text-lamp"
+          onClick={push.support === 'off' ? togglePush : () => setSheetOpen(true)}
+          aria-label={
+            push.support === 'off'
+              ? 'Activar alertas de comida'
+              : 'Alertas de comida: cómo activarlas en iPhone'
+          }
+          className="flex min-h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-secondary text-lamp outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-40"
         >
-          Activar avisos
+          <BellOff className="size-5" aria-hidden />
         </button>
-      ) : push.support !== 'on' && hint ? (
-        <p className="text-sm leading-snug text-muted-foreground">{hint}</p>
-      ) : null}
-      {hint ? (
-        <p id="feed-alert-hint" className="sr-only">
-          {hint}
-        </p>
       ) : null}
       <FeedScheduleSheet
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         intervals={schedule.intervals}
+        push={push.support}
+        pushBusy={push.busy}
+        onTogglePush={togglePush}
         onSave={async (next) => {
           try {
             await schedule.saveIntervals(next)
             toast.success('Horario guardado')
             setSheetOpen(false)
           } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'No se pudo guardar')
+            toast.error(friendlyError(error, 'No se pudo guardar'))
           }
         }}
       />
@@ -106,14 +122,69 @@ export function FeedAlert({ caregiver, events }: FeedAlertProps) {
   )
 }
 
+/** Upcoming: the time, big. Within 15 min: amber countdown. Late: coral, how late. */
+function NextFeedLine({ next, pushOn }: { next: NextFeed; pushOn: boolean }) {
+  const now = new Date()
+  const status = nextFeedStatus(next, now)
+  const clock = formatFeedClock(next.dueAt)
+  const rule = `cada ${formatDuration(next.intervalMs)}`
+
+  if (status === 'late') {
+    return (
+      <span className="flex min-w-0 flex-col" role="status">
+        <span className="text-base font-semibold text-due">Toca comida</span>
+        <span className="text-sm text-due/90">
+          desde las <span className="font-clock font-medium">{clock}</span> · hace{' '}
+          {formatElapsed(next.dueAt, now)}
+        </span>
+      </span>
+    )
+  }
+
+  return (
+    <span className="flex min-w-0 flex-col">
+      <span className="text-xs text-muted-foreground">
+        Próxima comida · {rule}
+        {pushOn ? (
+          <BellRing className="ml-1.5 inline size-3.5 align-[-2px] text-lamp" aria-label="alertas activas" />
+        ) : null}
+      </span>
+      <span className="flex items-baseline gap-2">
+        <span
+          className={cn(
+            'font-clock text-2xl leading-tight font-semibold',
+            status === 'soon' ? 'text-lamp' : 'text-foreground',
+          )}
+        >
+          {clock}
+        </span>
+        <span className={cn('text-sm whitespace-nowrap', status === 'soon' ? 'font-medium text-lamp' : 'text-muted-foreground')}>
+          en {formatElapsed(now, next.dueAt)}
+        </span>
+      </span>
+    </span>
+  )
+}
+
 type FeedScheduleSheetProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   intervals: FeedIntervals
+  push: PushSupport
+  pushBusy: boolean
+  onTogglePush: () => void
   onSave: (next: FeedIntervals) => Promise<void>
 }
 
-function FeedScheduleSheet({ open, onOpenChange, intervals, onSave }: FeedScheduleSheetProps) {
+function FeedScheduleSheet({
+  open,
+  onOpenChange,
+  intervals,
+  push,
+  pushBusy,
+  onTogglePush,
+  onSave,
+}: FeedScheduleSheetProps) {
   const [draft, setDraft] = useState(intervals)
   const [saving, setSaving] = useState(false)
 
@@ -126,7 +197,7 @@ function FeedScheduleSheet({ open, onOpenChange, intervals, onSave }: FeedSchedu
       open={open}
       onOpenChange={onOpenChange}
       title="Horario de comidas"
-      description="Un intervalo para el día y otro para la noche, desde las 22:00."
+      description="La próxima comida es la última más el intervalo del momento en que comió: uno de día y otro de noche, desde las 22:00."
     >
       {open ? (
         <form
@@ -145,13 +216,30 @@ function FeedScheduleSheet({ open, onOpenChange, intervals, onSave }: FeedSchedu
           />
           <IntervalStepper
             label="Noche"
-            detail="Desde las 22:00"
+            detail="De 22:00 a 7:00"
             minutes={draft.nightMinutes}
             onChange={(nightMinutes) => setDraft((current) => ({ ...current, nightMinutes }))}
           />
           <SheetButton type="submit" disabled={saving}>
             {saving ? 'Guardando…' : 'Guardar'}
           </SheetButton>
+          <div className="flex flex-col gap-2 rounded-2xl bg-secondary/60 px-4 py-3">
+            <p className="flex items-start gap-2 text-sm leading-snug">
+              {push === 'on' ? (
+                <BellRing className="mt-0.5 size-4 shrink-0 text-lamp" aria-hidden />
+              ) : (
+                <BellOff className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
+              )}
+              <span className={push === 'on' ? 'text-foreground' : 'text-muted-foreground'}>
+                {pushHint(push)}
+              </span>
+            </p>
+            {push === 'off' || push === 'on' ? (
+              <SheetButton tone="secondary" disabled={pushBusy} onClick={onTogglePush}>
+                {push === 'on' ? 'Desactivar alertas de comida' : 'Activar alertas de comida'}
+              </SheetButton>
+            ) : null}
+          </div>
         </form>
       ) : null}
     </NightSheet>
@@ -188,7 +276,10 @@ function IntervalStepper({ label, detail, minutes, onChange }: IntervalStepperPr
         >
           <ChevronDown className="size-5" />
         </button>
-        <p className="font-clock w-16 text-center text-xl font-semibold tabular-nums text-lamp">
+        <p
+          className="font-clock min-w-24 text-center text-lg font-semibold text-foreground"
+          aria-live="polite"
+        >
           {formatDuration(value * 60_000)}
         </p>
         <button

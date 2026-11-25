@@ -87,7 +87,7 @@ export function usePushSubscription(caregiver: Caregiver) {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') {
       setSupport(permission === 'denied' ? 'denied' : 'off')
-      throw new Error('No se concedió permiso para avisos')
+      throw new Error('No se concedió permiso para alertas')
     }
 
     const registration = await navigator.serviceWorker.ready

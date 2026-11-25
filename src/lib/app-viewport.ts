@@ -92,8 +92,12 @@ export function bindAppViewport() {
     const viewport = window.visualViewport
     const offsetTop = viewport?.offsetTop ?? 0
     const visual = viewport?.height ?? window.innerHeight
-    const keyboard =
-      standalone && isEditableFocused() && fullHeight - (visual + offsetTop) > KEYBOARD_GAP
+    const covered = fullHeight - (visual + offsetTop)
+    // Safari's toolbars also shrink the visible area, so outside the installed
+    // app only a much larger gap counts as the keyboard.
+    const keyboardLikely = isEditableFocused() && covered > (standalone ? KEYBOARD_GAP : 200)
+    root.classList.toggle('keyboard-open', keyboardLikely)
+    const keyboard = standalone && keyboardLikely
 
     if (standalone && !keyboard) {
       root.style.setProperty('--app-top', '0px')

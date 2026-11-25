@@ -76,6 +76,7 @@ export function formatFeedClock(date: Date) {
   return date.toLocaleTimeString('es-MX', {
     hour: '2-digit',
     minute: '2-digit',
+    hourCycle: 'h23',
     timeZone: FEED_TIME_ZONE,
   })
 }
@@ -90,11 +91,14 @@ export function intervalMsFor(period: FeedPeriod, intervals: FeedIntervals) {
   return clampIntervalMinutes(minutes) * 60 * 1000
 }
 
-export function nextFeedLabel(next: NextFeed, now = new Date()) {
-  const clock = formatFeedClock(next.dueAt)
-  const period = periodLabel(next.period)
-  if (now.getTime() >= next.dueAt.getTime()) return `Toca comida desde ${clock} · ${period}`
-  return `Próxima comida ${clock} · ${period}`
+export type NextFeedStatus = 'upcoming' | 'soon' | 'late'
+
+/** Upcoming, within the 15-minute prep window, or past due. */
+export function nextFeedStatus(next: NextFeed, now = new Date()): NextFeedStatus {
+  const left = next.dueAt.getTime() - now.getTime()
+  if (left <= 0) return 'late'
+  if (left <= PREP_BEFORE_MS) return 'soon'
+  return 'upcoming'
 }
 
 export function nextFeed(

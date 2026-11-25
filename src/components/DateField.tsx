@@ -11,12 +11,12 @@ export function DateField({ id = 'session-date', value, onChange }: DateFieldPro
   const chosen = mexicanDate(value)
 
   return (
-    <label className="relative block min-h-24 cursor-pointer rounded-[1.75rem] bg-card ring-1 ring-white/10">
-      <span className="flex min-h-24 flex-col items-center justify-center gap-1 px-4">
+    <label className="relative block min-h-20 cursor-pointer rounded-[1.75rem] bg-card ring-1 ring-border focus-within:ring-3 focus-within:ring-ring/50">
+      <span className="flex min-h-20 flex-col items-center justify-center gap-1 px-4">
         <span className="text-sm text-muted-foreground">Fecha</span>
         <span
           className={cn(
-            'text-3xl leading-none font-medium tabular-nums',
+            'font-clock text-3xl leading-none font-medium',
             chosen ? 'text-foreground' : 'text-muted-foreground',
           )}
         >

@@ -3,15 +3,15 @@
   "name": "Baby",
   "short_name": "Baby",
   "description": "Seguimiento de cuidados del bebé",
-  "lang": "es",
+  "lang": "es-MX",
   "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
-  "background_color": "#1c1612",
-  "theme_color": "#1c1612",
+  "background_color": "#1a120c",
+  "theme_color": "#1a120c",
   "categories": ["health", "lifestyle"],
   "icons": [
     {

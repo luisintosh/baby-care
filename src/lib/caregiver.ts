@@ -16,3 +16,13 @@ export function caregiverName(caregiver: Caregiver) {
 export function caregiverEmail(caregiver: Caregiver) {
   return CAREGIVERS.find((item) => item.id === caregiver)?.email ?? ''
 }
+
+/** "Tú" for your own entries, the other person's name for theirs. */
+export function whoLabel(author: Caregiver, me: Caregiver) {
+  return author === me ? 'Tú' : caregiverName(author)
+}
+
+/** "Lo registraste tú" or "Registró Clau". */
+export function registeredBy(author: Caregiver, me: Caregiver) {
+  return author === me ? 'Lo registraste tú' : `Registró ${caregiverName(author)}`
+}

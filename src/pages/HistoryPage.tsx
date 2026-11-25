@@ -1,49 +1,51 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { EventDialogs } from '@/components/EventDialogs'
+import { LoadError } from '@/components/LoadError'
 import { Timeline } from '@/components/Timeline'
 import type { useEvents } from '@/hooks/use-events'
-import type { BabyEvent } from '@/lib/types'
+import type { BabyEvent, Caregiver } from '@/lib/types'
 
 type HistoryPageProps = {
+  caregiver: Caregiver
   eventsApi: ReturnType<typeof useEvents>
 }
 
-export function HistoryPage({ eventsApi }: HistoryPageProps) {
+export function HistoryPage({ caregiver, eventsApi }: HistoryPageProps) {
   const [sleepEvent, setSleepEvent] = useState<BabyEvent | null>(null)
-  const [deleting, setDeleting] = useState<BabyEvent | null>(null)
+  const [detail, setDetail] = useState<BabyEvent | null>(null)
 
   function handleSelect(event: BabyEvent) {
+    if (event.pending) return
     if (event.kind === 'sleep') {
       setSleepEvent(event)
       return
     }
-    setDeleting(event)
+    setDetail(event)
   }
 
   return (
     <div className="flex flex-col gap-4">
-      <Link
-        to="/"
-        className="w-fit rounded-full px-1 py-1 text-sm text-lamp outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-      >
-        ← Registrar
-      </Link>
-      <h1 className="text-xl">Anteriores</h1>
-      {eventsApi.error ? (
-        <p className="text-sm text-destructive">{eventsApi.error}</p>
-      ) : (
-        <Timeline events={eventsApi.events} onSelect={handleSelect} />
+      {eventsApi.error ? <LoadError message={eventsApi.error} onRetry={eventsApi.reload} /> : null}
+      {eventsApi.loading ? (
+        <div className="flex flex-col gap-2" aria-busy="true" aria-label="Cargando historial">
+          <div className="h-6 w-32 rounded-md bg-foreground/5" />
+          {[0, 1, 2, 3].map((row) => (
+            <div key={row} className="h-16 rounded-2xl bg-card" />
+          ))}
+        </div>
+      ) : eventsApi.error && eventsApi.events.length === 0 ? null : (
+        <Timeline caregiver={caregiver} events={eventsApi.events} onSelect={handleSelect} />
       )}
       <EventDialogs
+        caregiver={caregiver}
         eventsApi={eventsApi}
         sleepEvent={sleepEvent}
-        deleting={deleting}
+        detail={detail}
         onSleepOpenChange={(open) => {
           if (!open) setSleepEvent(null)
         }}
-        onDeletingOpenChange={(open) => {
-          if (!open) setDeleting(null)
+        onDetailOpenChange={(open) => {
+          if (!open) setDetail(null)
         }}
       />
     </div>

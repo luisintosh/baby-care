@@ -41,7 +41,7 @@ function SignedIn({ caregiver }: { caregiver: Caregiver }) {
       <Routes>
         <Route
           element={
-            <AppShell caregiver={caregiver} onChangeUser={() => void signOutCaregiver()} />
+            <AppShell caregiver={caregiver} onSignOut={() => void signOutCaregiver()} />
           }
         >
           <Route
@@ -54,10 +54,16 @@ function SignedIn({ caregiver }: { caregiver: Caregiver }) {
               />
             }
           />
-          <Route path="historial" element={<HistoryPage eventsApi={eventsApi} />} />
+          <Route path="historial" element={<HistoryPage caregiver={caregiver} eventsApi={eventsApi} />} />
           <Route
             path="metricas"
-            element={<MetricsPage events={eventsApi.events} loading={eventsApi.loading} />}
+            element={
+              <MetricsPage
+                caregiver={caregiver}
+                events={eventsApi.events}
+                loading={eventsApi.loading}
+              />
+            }
           />
           <Route
             path="recordatorios"
@@ -66,6 +72,8 @@ function SignedIn({ caregiver }: { caregiver: Caregiver }) {
                 caregiver={caregiver}
                 reminders={remindersApi.reminders}
                 active={remindersApi.active}
+                loading={remindersApi.loading}
+                onRestore={remindersApi.restoreReminder}
                 onCreate={remindersApi.createReminder}
                 onComplete={remindersApi.completeReminder}
                 onDelete={remindersApi.deleteReminder}

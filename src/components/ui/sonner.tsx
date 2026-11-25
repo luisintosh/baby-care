@@ -11,6 +11,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      // Top, under the header: at the bottom it covered the pad and the tab
+      // bar, and "Deshacer" sat where the thumb lands next.
+      position="top-center"
+      offset={{ top: 'calc(max(env(safe-area-inset-top, 0px), var(--safe-top, 0px)) + 4rem)' }}
+      mobileOffset={{ top: 'calc(max(env(safe-area-inset-top, 0px), var(--safe-top, 0px)) + 4rem)', left: '1rem', right: '1rem' }}
+      containerAriaLabel="Notificaciones"
       icons={{
         success: (
           <CircleCheckIcon className="size-4" />
@@ -38,7 +44,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          toast: "cn-toast text-base! py-4! gap-3!",
+          title: "text-base! font-medium!",
+          actionButton: "h-10! px-4! text-sm! font-medium! rounded-xl! bg-primary! text-primary-foreground!",
         },
       }}
       {...props}

@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toDateInput } from '@/lib/format'
+import { useResume } from '@/hooks/use-resume'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import type { Caregiver, Reminder } from '@/lib/types'
 
 function isActive(reminder: Reminder, today = toDateInput(new Date())) {
   return !reminder.completed_at && reminder.starts_on <= today && reminder.ends_on >= today
+}
+
+export function isUpcoming(reminder: Reminder, today = toDateInput(new Date())) {
+  return !reminder.completed_at && reminder.starts_on > today
 }
 
 export function useReminders() {
@@ -50,6 +55,8 @@ export function useReminders() {
     }
   }, [load])
 
+  useResume(() => void load())
+
   const active = useMemo(() => reminders.filter((reminder) => isActive(reminder)), [reminders])
 
   async function createReminder(input: { title: string; startsOn: string; endsOn: string }) {
@@ -74,6 +81,19 @@ export function useReminders() {
     await load()
   }
 
+  /** Puts a deleted reminder back (undo). */
+  async function restoreReminder(reminder: Reminder) {
+    const { error: insertError } = await supabase.from('reminders').insert({
+      title: reminder.title,
+      starts_on: reminder.starts_on,
+      ends_on: reminder.ends_on,
+      completed_at: reminder.completed_at,
+      completed_by: reminder.completed_by,
+    })
+    if (insertError) throw insertError
+    await load()
+  }
+
   async function deleteReminder(id: number) {
     const { error: deleteError } = await supabase.from('reminders').delete().eq('id', id)
     if (deleteError) throw deleteError
@@ -88,5 +108,6 @@ export function useReminders() {
     createReminder,
     completeReminder,
     deleteReminder,
+    restoreReminder,
   }
 }

@@ -4,6 +4,7 @@ import {
   clampIntervalMinutes,
   type FeedIntervals,
 } from '@/lib/feed-schedule'
+import { useResume } from '@/hooks/use-resume'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 
 type FeedScheduleRow = {
@@ -62,6 +63,8 @@ export function useFeedSchedule() {
       void supabase.removeChannel(channel)
     }
   }, [load])
+
+  useResume(() => void load())
 
   async function saveIntervals(next: FeedIntervals) {
     const dayMinutes = clampIntervalMinutes(next.dayMinutes)

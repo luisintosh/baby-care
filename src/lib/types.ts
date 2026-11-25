@@ -9,6 +9,8 @@ export type BabyEvent = {
   caregiver: Caregiver
   note: string | null
   created_at: string
+  /** Shown before the server confirms the insert. */
+  pending?: boolean
 }
 
 export type Reminder = {

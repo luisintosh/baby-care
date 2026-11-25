@@ -22,12 +22,12 @@ export function UserGate() {
   }
 
   return (
-    <main className="gate-pad flex min-h-0 w-full max-w-md flex-1 flex-col justify-center overflow-y-auto px-5">
+    <main className="gate-pad flex min-h-0 w-full max-w-md flex-1 flex-col justify-center-safe overflow-y-auto px-5">
       <h1 className="font-heading text-4xl leading-tight">¿Quién registra?</h1>
       <p className="mt-3 text-muted-foreground">
-        Elige tu nombre y la fecha. La sesión queda en este teléfono hasta que toques tu nombre.
+        Elige tu nombre y escribe la fecha. La sesión queda abierta en este teléfono hasta que la cierres desde tu nombre.
       </p>
-      <form className="mt-10 flex flex-col gap-3" onSubmit={(event) => void submit(event)}>
+      <form className="mt-6 flex flex-col gap-3" onSubmit={(event) => void submit(event)}>
         {CAREGIVERS.map((person) => (
           <button
             key={person.id}
@@ -35,7 +35,7 @@ export function UserGate() {
             aria-pressed={caregiver === person.id}
             onClick={() => setCaregiver(person.id)}
             className={cn(
-              'pad-glow min-h-24 rounded-[1.75rem] bg-card text-2xl font-medium ring-1 ring-white/10 transition active:translate-y-px',
+              'pad-glow min-h-20 rounded-[1.75rem] bg-card text-2xl font-medium ring-1 ring-border outline-none transition focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px',
               caregiver === person.id && 'ring-2 ring-lamp',
             )}
           >
