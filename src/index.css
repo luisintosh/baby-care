@@ -21,6 +21,7 @@
     --color-kind-poop: var(--kind-poop);
     --color-kind-sleep: var(--kind-sleep);
     --color-kind-medicine: var(--kind-medicine);
+    --color-kind-solid: var(--kind-solid);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -82,6 +83,7 @@
     --kind-poop: oklch(0.64 0.07 50);
     --kind-sleep: oklch(0.72 0.07 255);
     --kind-medicine: oklch(0.74 0.09 350);
+    --kind-solid: oklch(0.74 0.09 135);
     --radius: 1rem;
     --emoji-filter: none;
 }

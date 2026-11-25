@@ -1,4 +1,4 @@
-import { addDays, formatDuration, startOfLocalDay } from '@/lib/format'
+import { addDays, startOfLocalDay } from '@/lib/format'
 import type { BabyEvent, EventKind } from '@/lib/types'
 
 export type DayPoint = {
@@ -8,7 +8,7 @@ export type DayPoint = {
   hasData: boolean
   feeds: number
   poops: number
-  sleepMs: number
+  solids: number
 }
 
 export type Metrics = {
@@ -16,14 +16,13 @@ export type Metrics = {
   lastPoop: BabyEvent | null
   lastMedicine: BabyEvent | null
   medicineToday: BabyEvent[]
-  openSleep: BabyEvent | null
-  lastClosedSleep: BabyEvent | null
+  lastSolid: BabyEvent | null
   todayFeeds: number
   todayPoops: number
   todayMedicines: number
-  todaySleepMs: number
+  todaySolids: number
   /** The same counts for yesterday, up to this time of day. */
-  yesterdaySoFar: { feeds: number; poops: number; medicines: number; sleepMs: number }
+  yesterdaySoFar: { feeds: number; poops: number; medicines: number; solids: number }
   week: DayPoint[]
   hasTrend: boolean
   /** Both weeks have enough days logged to compare honestly. */
@@ -49,23 +48,6 @@ function countBetween(events: BabyEvent[], kind: EventKind, from: Date, to: Date
 
 function countOnDay(events: BabyEvent[], kind: EventKind, dayStart: Date) {
   return countBetween(events, kind, dayStart, addDays(dayStart, 1))
-}
-
-function sleepMsBetween(events: BabyEvent[], from: Date, to: Date, now: Date) {
-  let total = 0
-  for (const event of events) {
-    if (event.kind !== 'sleep') continue
-    const start = new Date(event.occurred_at).getTime()
-    const end = (event.ended_at ? new Date(event.ended_at) : now).getTime()
-    const lo = Math.max(start, from.getTime())
-    const hi = Math.min(end, to.getTime())
-    if (hi > lo) total += hi - lo
-  }
-  return total
-}
-
-function sleepMsOnDay(events: BabyEvent[], dayStart: Date, now: Date) {
-  return sleepMsBetween(events, dayStart, addDays(dayStart, 1), now)
 }
 
 function average(values: number[]) {
@@ -98,9 +80,6 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
     .filter((event) => !event.pending)
     .sort((a, b) => b.occurred_at.localeCompare(a.occurred_at))
   const today = startOfLocalDay(now)
-  const openSleep = sorted.find((event) => event.kind === 'sleep' && !event.ended_at) ?? null
-  const lastClosedSleep =
-    sorted.find((event) => event.kind === 'sleep' && event.ended_at) ?? null
 
   const daysWithData = new Set(
     sorted.map((event) => startOfLocalDay(new Date(event.occurred_at)).getTime()),
@@ -116,7 +95,7 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
       hasData: daysWithData.has(day.getTime()),
       feeds: countOnDay(sorted, 'feed', day),
       poops: countOnDay(sorted, 'poop', day),
-      sleepMs: sleepMsOnDay(sorted, day, now),
+      solids: countOnDay(sorted, 'solid', day),
     })
   }
 
@@ -132,7 +111,7 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
       hasData: daysWithData.has(day.getTime()),
       feeds: countOnDay(sorted, 'feed', day),
       poops: countOnDay(sorted, 'poop', day),
-      sleepMs: sleepMsOnDay(sorted, day, now),
+      solids: countOnDay(sorted, 'solid', day),
     })
   }
 
@@ -146,7 +125,7 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
   if (hasTrend) {
     const feeds = average(thisFull.map((day) => day.feeds))
     const poops = average(thisFull.map((day) => day.poops))
-    const sleep = average(thisFull.map((day) => day.sleepMs))
+    const solids = average(thisFull.map((day) => day.solids))
     if (canCompare) {
       summaries.push(
         `Comidas: ${oneDecimal(feeds)} al día (semana pasada ${oneDecimal(average(prevFull.map((day) => day.feeds)))})`,
@@ -155,12 +134,12 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
         `Popó: ${oneDecimal(poops)} al día (semana pasada ${oneDecimal(average(prevFull.map((day) => day.poops)))})`,
       )
       summaries.push(
-        `Sueño: ${formatDuration(sleep)} al día (semana pasada ${formatDuration(average(prevFull.map((day) => day.sleepMs)))})`,
+        `Papilla: ${oneDecimal(solids)} al día (semana pasada ${oneDecimal(average(prevFull.map((day) => day.solids)))})`,
       )
     } else {
       summaries.push(`Comidas: ${oneDecimal(feeds)} al día`)
       summaries.push(`Popó: ${oneDecimal(poops)} al día`)
-      summaries.push(`Sueño registrado: ${formatDuration(sleep)} al día`)
+      summaries.push(`Papilla: ${oneDecimal(solids)} al día`)
     }
   }
 
@@ -176,17 +155,16 @@ export function computeMetrics(events: BabyEvent[], now = new Date()): Metrics {
         event.kind === 'medicine' &&
         startOfLocalDay(new Date(event.occurred_at)).getTime() === today.getTime(),
     ),
-    openSleep,
-    lastClosedSleep,
+    lastSolid: lastOf(sorted, 'solid'),
     todayFeeds: countOnDay(sorted, 'feed', today),
     todayPoops: countOnDay(sorted, 'poop', today),
     todayMedicines: countOnDay(sorted, 'medicine', today),
-    todaySleepMs: sleepMsOnDay(sorted, today, now),
+    todaySolids: countOnDay(sorted, 'solid', today),
     yesterdaySoFar: {
       feeds: countBetween(sorted, 'feed', yesterday, yesterdayNow),
       poops: countBetween(sorted, 'poop', yesterday, yesterdayNow),
       medicines: countBetween(sorted, 'medicine', yesterday, yesterdayNow),
-      sleepMs: sleepMsBetween(sorted, yesterday, yesterdayNow, now),
+      solids: countBetween(sorted, 'solid', yesterday, yesterdayNow),
     },
     week,
     hasTrend,

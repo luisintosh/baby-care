@@ -1,4 +1,4 @@
-export type EventKind = 'feed' | 'poop' | 'sleep' | 'medicine'
+export type EventKind = 'feed' | 'poop' | 'sleep' | 'medicine' | 'solid'
 export type Caregiver = 'luis' | 'clau'
 
 export type BabyEvent = {

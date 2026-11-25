@@ -69,11 +69,7 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
     try {
       const created = await eventsApi.createEvent({ kind, occurredAt, caregiver, note: extraNote })
       haptic('success')
-      const title =
-        kind === 'sleep'
-          ? `${meta.emoji} Se durmió · ${formatWhen(occurredAt)}`
-          : `${meta.emoji} ${meta.label} · ${formatWhen(occurredAt)}`
-      toast.success(title, {
+      toast.success(`${meta.emoji} ${meta.label} · ${formatWhen(occurredAt)}`, {
         duration: 7000,
         action: {
           label: 'Deshacer',
@@ -112,10 +108,6 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
 
   function handleSelect(kind: EventKind) {
     haptic('tap')
-    if (kind === 'sleep' && eventsApi.openSleep) {
-      setSleepEvent(eventsApi.openSleep)
-      return
-    }
     if (kind === 'medicine') {
       setNote('')
       setPendingKind('medicine')
@@ -177,7 +169,6 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
         )}
         <ActionPad
           onSelect={handleSelect}
-          openSleepSince={eventsApi.openSleep ? new Date(eventsApi.openSleep.occurred_at) : null}
           lastAtByKind={lastAtByKind}
           busyKinds={busyKinds}
         />

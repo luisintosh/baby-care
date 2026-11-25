@@ -9,6 +9,7 @@ export type Handoff = {
   feeds: number
   poops: number
   medicines: number
+  solids: number
   /** Sleep time inside the window, open sleeps counted up to now. */
   sleepMs: number
 }
@@ -47,6 +48,7 @@ export function computeHandoff(events: BabyEvent[], me: Caregiver, now = new Dat
     feeds: theirs.filter((event) => event.kind === 'feed').length,
     poops: theirs.filter((event) => event.kind === 'poop').length,
     medicines: theirs.filter((event) => event.kind === 'medicine').length,
+    solids: theirs.filter((event) => event.kind === 'solid').length,
     sleepMs,
   }
 }

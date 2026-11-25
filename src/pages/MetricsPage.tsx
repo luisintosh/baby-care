@@ -5,7 +5,6 @@ import {
   formatAgo,
   formatClock,
   formatDuration,
-  formatElapsed,
   formatShortDate,
   formatWhen,
 } from '@/lib/format'
@@ -28,22 +27,7 @@ export function MetricsPage({ caregiver, events, loading }: MetricsPageProps) {
   const metrics = computeMetrics(events, now)
   const maxFeeds = Math.max(1, ...metrics.week.map((day) => day.feeds))
   const maxPoops = Math.max(1, ...metrics.week.map((day) => day.poops))
-  const maxSleep = Math.max(1, ...metrics.week.map((day) => day.sleepMs))
-
-  const sleepNow = metrics.openSleep
-    ? `Dormida ${formatElapsed(new Date(metrics.openSleep.occurred_at), now)}`
-    : metrics.lastClosedSleep?.ended_at
-      ? `Despierta ${formatAgo(new Date(metrics.lastClosedSleep.ended_at), now)}`
-      : 'Sin registro'
-
-  const sleepHint = metrics.openSleep
-    ? `desde las ${formatClock(new Date(metrics.openSleep.occurred_at))}`
-    : metrics.lastClosedSleep?.ended_at
-      ? `Último sueño: ${formatDuration(
-          new Date(metrics.lastClosedSleep.ended_at).getTime() -
-            new Date(metrics.lastClosedSleep.occurred_at).getTime(),
-        )}`
-      : undefined
+  const maxSolids = Math.max(1, ...metrics.week.map((day) => day.solids))
 
   function lastLine(event: BabyEvent | null) {
     if (!event) return { value: 'Sin registro', hint: undefined }
@@ -56,6 +40,7 @@ export function MetricsPage({ caregiver, events, loading }: MetricsPageProps) {
 
   const feed = lastLine(metrics.lastFeed)
   const poop = lastLine(metrics.lastPoop)
+  const solid = lastLine(metrics.lastSolid)
   const medsToday = metrics.medicineToday
   const lastMed = metrics.lastMedicine
   const medicine = medsToday.length
@@ -90,14 +75,8 @@ export function MetricsPage({ caregiver, events, loading }: MetricsPageProps) {
           ) : (
             <>
               <Stat emoji="🍼" label="Última comida" value={feed.value} hint={feed.hint} />
+              <Stat emoji="🥣" label="Última papilla" value={solid.value} hint={solid.hint} />
               <Stat emoji="💩" label="Última popó" value={poop.value} hint={poop.hint} />
-              <Stat
-                emoji="😴"
-                label="Sueño"
-                value={sleepNow}
-                hint={sleepHint}
-                tone={metrics.openSleep ? 'sleep' : undefined}
-              />
               <Stat emoji="💊" label="Medicina" value={medicine.value} hint={medicine.hint} />
             </>
           )}
@@ -117,18 +96,13 @@ export function MetricsPage({ caregiver, events, loading }: MetricsPageProps) {
           ) : (
             <>
               <Mini emoji="🍼" count={metrics.todayFeeds} label="comidas" compare={String(y.feeds)} />
+              <Mini emoji="🥣" count={metrics.todaySolids} label="papillas" compare={String(y.solids)} />
               <Mini emoji="💩" count={metrics.todayPoops} label="popós" compare={String(y.poops)} />
               <Mini
                 emoji="💊"
                 count={metrics.todayMedicines}
                 label="medicinas"
                 compare={String(y.medicines)}
-              />
-              <Mini
-                emoji="😴"
-                count={formatDuration(metrics.todaySleepMs)}
-                label="de sueño"
-                compare={formatDuration(y.sleepMs)}
               />
             </>
           )}
@@ -179,14 +153,13 @@ export function MetricsPage({ caregiver, events, loading }: MetricsPageProps) {
               }))}
             />
             <Bars
-              title="😴 Horas de sueño"
-              tone="bg-kind-sleep"
+              title="🥣 Papilla"
+              tone="bg-kind-solid"
               points={metrics.week.map((day) => ({
                 ...day,
-                value: day.sleepMs,
-                max: maxSleep,
-                display: (day.sleepMs / 3_600_000).toLocaleString('es-MX', { maximumFractionDigits: 1 }),
-                spoken: formatDuration(day.sleepMs),
+                value: day.solids,
+                max: maxSolids,
+                display: String(day.solids),
               }))}
             />
           </div>
@@ -201,13 +174,11 @@ function Stat({
   label,
   value,
   hint,
-  tone,
 }: {
   emoji: string
   label: string
   value: string
   hint?: string
-  tone?: 'sleep'
 }) {
   return (
     <article className="rounded-2xl bg-card px-4 py-3">
@@ -217,7 +188,7 @@ function Stat({
         </span>{' '}
         {label}
       </p>
-      <p className={cn('mt-1 text-lg leading-snug font-medium', tone === 'sleep' && 'text-sleep')}>{value}</p>
+      <p className="mt-1 text-lg leading-snug font-medium">{value}</p>
       {hint ? <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">{hint}</p> : null}
     </article>
   )

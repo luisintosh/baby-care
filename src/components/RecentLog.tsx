@@ -69,6 +69,7 @@ function HandoffLine({ caregiver, events }: { caregiver: Caregiver; events: Baby
 
   const parts = [
     handoff.feeds ? `${handoff.feeds} 🍼` : null,
+    handoff.solids ? `${handoff.solids} 🥣` : null,
     handoff.poops ? `${handoff.poops} 💩` : null,
     handoff.medicines ? `${handoff.medicines} 💊` : null,
     handoff.sleepMs >= 60_000 ? `😴 ${formatDuration(handoff.sleepMs)}` : null,

@@ -12,7 +12,7 @@ Luis and Clau are the only users. They are the two caregivers of one baby. Each 
 
 ## Product Purpose
 
-Baby is the shared care log for that one baby. It lets either caregiver record a feed, a diaper, sleep, or medicine, and lets the other see the same timeline without asking. It also says when the next feed is due and can nudge with the phone locked.
+Baby is the shared care log for that one baby. It lets either caregiver record a milk feed, complementary food (papilla), a diaper, or medicine, and lets the other see the same timeline without asking. It also says when the next feed is due and can nudge with the phone locked.
 
 Success means two things at once: neither person has to ask what just happened, and a feed is not missed because the interval lived only in someone’s head.
 
@@ -26,9 +26,9 @@ The real surface is a phone, portrait, installable from the browser. The interfa
 
 A session starts by choosing Luis or Clau and the date. That name is how each event and each completed aviso is signed. The session stays on the phone until the name is tapped.
 
-Logging happens on Registrar. Four actions: Comida, Popó, Sueño, Medicina. Comida and Popó log in one tap. Medicina asks for a note. Sueño opens an interval and closes it later; only one sleep can be open. The clock can be moved off “now” to backdate a log. A fresh log can be undone. The timeline is the handoff: the other person’s events are already there.
+Logging happens on Registrar. Four actions: Comida (milk), Popó, Papilla, Medicina. Comida, Popó and Papilla log in one tap. Medicina asks for a note. Only Comida sets the next feed; Papilla is counted but does not move it. Sleep is no longer logged from Registrar; past sleeps stay in the log and can still be edited. The clock can be moved off “now” to backdate a log. A fresh log can be undone. The timeline is the handoff: the other person’s events are already there.
 
-Métricas shows the baby’s age and birth date, the current state (last feed, last diaper, sleep, today’s medicine), today’s counts against yesterday at the same hour, and a 7-day trend once there is enough history.
+Métricas shows the baby’s age and birth date, the current state (last feed, last papilla, last diaper, today’s medicine), today’s counts against yesterday at the same hour, and a 7-day trend once there is enough history.
 
 Pendientes (the tab; each item is an aviso) are dated reminders with a start and end, separate from the feed push alerts. Either caregiver can mark one done.
 
@@ -42,7 +42,7 @@ Confirmed:
 - Two accounts share one date passphrase. A session is required to read or write the log.
 - Spanish (Mexico), Mexico City clock, phone-first installable web app.
 - Do not invent a baby name, weight, or medical advice. Age is computed from the real birth date in `src/lib/baby.ts`; nothing else about the baby is recorded.
-- Event kinds are feed, poop, sleep, and medicine. Sleep is the only kind with an end time.
+- Event kinds are feed, solid (papilla), poop, medicine, and sleep (historic only). Sleep is the only kind with an end time.
 - The shared log and the next-feed nudge are both the product. Dated avisos support care; they are not a substitute for the feed nudge.
 
 ## Brand Commitments

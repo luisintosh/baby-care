@@ -69,6 +69,7 @@ function summary(events: BabyEvent[]) {
   const feeds = events.filter((event) => event.kind === 'feed').length
   const poops = events.filter((event) => event.kind === 'poop').length
   const meds = events.filter((event) => event.kind === 'medicine').length
+  const solids = events.filter((event) => event.kind === 'solid').length
   const now = Date.now()
   const sleepMs = events
     .filter((event) => event.kind === 'sleep')
@@ -78,6 +79,7 @@ function summary(events: BabyEvent[]) {
     }, 0)
   return [
     feeds ? `${feeds} 🍼` : null,
+    solids ? `${solids} 🥣` : null,
     poops ? `${poops} 💩` : null,
     meds ? `${meds} 💊` : null,
     sleepMs >= 60_000 ? `😴 ${formatDuration(sleepMs)}` : null,
