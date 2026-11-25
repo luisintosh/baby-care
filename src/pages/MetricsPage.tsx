@@ -210,7 +210,7 @@ function Stat({
   tone?: 'sleep'
 }) {
   return (
-    <article className="rounded-2xl bg-card px-3 py-3">
+    <article className="rounded-2xl bg-card px-4 py-3">
       <p className="text-sm text-muted-foreground">
         <span className="kind-emoji" aria-hidden>
           {emoji}
@@ -235,8 +235,8 @@ function Mini({
   compare: string
 }) {
   return (
-    <article className="rounded-2xl bg-card px-3 py-3 text-center">
-      <p className="font-clock text-3xl font-medium text-foreground">{count}</p>
+    <article className="rounded-2xl bg-card px-4 py-3 text-center">
+      <p className="text-3xl font-semibold text-foreground">{count}</p>
       <p className="mt-0.5 text-sm text-muted-foreground">
         <span className="kind-emoji" aria-hidden>
           {emoji}

@@ -261,7 +261,7 @@ function IntervalStepper({ label, detail, minutes, onChange }: IntervalStepperPr
   }
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl bg-secondary/60 px-3 py-3">
+    <div className="flex items-center justify-between gap-3 rounded-2xl bg-secondary/60 py-3 pr-2 pl-4">
       <div className="min-w-0 text-left">
         <p className="font-medium">{label}</p>
         <p className="text-sm text-muted-foreground">{detail}</p>
@@ -277,7 +277,7 @@ function IntervalStepper({ label, detail, minutes, onChange }: IntervalStepperPr
           <ChevronDown className="size-5" />
         </button>
         <p
-          className="font-clock min-w-24 text-center text-lg font-semibold text-foreground"
+          className="min-w-16 text-center text-lg font-semibold text-foreground"
           aria-live="polite"
         >
           {formatDuration(value * 60_000)}

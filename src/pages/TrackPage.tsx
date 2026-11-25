@@ -147,8 +147,8 @@ export function TrackPage({ caregiver, eventsApi, remindersApi }: TrackPageProps
   const ready = !eventsApi.loading && !failed
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-y-contain">
-      <div className="registrar-scroll scroll-fade flex min-h-[6.5rem] flex-1 flex-col gap-3 overflow-y-auto overscroll-y-contain pb-4">
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain">
+      <div className="registrar-scroll scroll-fade flex min-h-[6.5rem] flex-1 flex-col justify-end-safe gap-3 overflow-y-auto overscroll-y-contain pb-3">
         {failed ? <LoadError message={eventsApi.error ?? ''} onRetry={eventsApi.reload} /> : null}
         <ReminderBanner
           reminders={remindersApi.active}

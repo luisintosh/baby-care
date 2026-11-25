@@ -173,7 +173,7 @@ function ShiftKey({
       onClick={onClick}
       disabled={disabled}
       aria-label={name}
-      className="font-clock min-h-12 rounded-2xl bg-secondary text-sm font-medium outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-35"
+      className="min-h-12 rounded-2xl bg-secondary text-sm font-medium outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:opacity-35"
     >
       {label}
     </button>

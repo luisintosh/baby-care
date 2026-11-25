@@ -157,7 +157,7 @@ function TimelineRow({
       onClick={() => onSelect(event)}
       disabled={event.pending}
       className={cn(
-        'flex w-full items-start gap-3 rounded-2xl bg-card px-3 py-3 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:bg-secondary',
+        'flex w-full items-start gap-3 rounded-2xl bg-card px-4 py-3 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 active:bg-secondary',
         event.pending && 'opacity-60',
       )}
     >

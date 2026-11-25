@@ -35,7 +35,7 @@ export function AppShell({ caregiver, onSignOut }: AppShellProps) {
 
   return (
     <div className="flex min-h-0 w-full max-w-md flex-1 flex-col overflow-hidden">
-      <header className="safe-pad-top flex shrink-0 items-center justify-between gap-3 px-5 pb-1">
+      <header className="safe-pad-top flex shrink-0 items-center justify-between gap-3 px-5 pb-3">
         {history ? (
           <Link
             to="/"

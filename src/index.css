@@ -184,7 +184,7 @@ html.standalone .gate-pad {
 
 /* Fades the last rows so a clipped log reads as scrollable. */
 .scroll-fade {
-  mask-image: linear-gradient(to bottom, black calc(100% - 1.25rem), transparent);
+  mask-image: linear-gradient(to bottom, black calc(100% - 0.75rem), transparent);
 }
 
 .night-sheet {

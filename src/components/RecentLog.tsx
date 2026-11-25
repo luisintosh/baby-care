@@ -20,7 +20,7 @@ export function RecentLog({ caregiver, events, loading, failed, onSelect }: Rece
 
   if (loading) {
     return (
-      <section className="rounded-[1.75rem] bg-card px-4 py-3" aria-busy="true" aria-label="Cargando registros">
+      <section className="rounded-[1.75rem] bg-card px-3 py-2" aria-busy="true" aria-label="Cargando registros">
         <div className="flex flex-col gap-1">
           <div className="h-11 rounded-2xl bg-foreground/5" />
           <div className="h-11 rounded-2xl bg-foreground/5" />
@@ -33,7 +33,7 @@ export function RecentLog({ caregiver, events, loading, failed, onSelect }: Rece
   if (events.length === 0) {
     if (failed) return null
     return (
-      <section className="rounded-[1.75rem] bg-card px-4 py-3">
+      <section className="rounded-[1.75rem] bg-card px-3 py-2">
         <p className="px-1 py-6 text-center text-sm text-muted-foreground">
           Aún no hay registros. Toca un botón de abajo y queda guardado.
         </p>
@@ -42,7 +42,7 @@ export function RecentLog({ caregiver, events, loading, failed, onSelect }: Rece
   }
 
   return (
-    <section className="rounded-[1.75rem] bg-card px-4 py-3" aria-label="Últimos registros">
+    <section className="rounded-[1.75rem] bg-card px-3 py-2" aria-label="Últimos registros">
       <HandoffLine caregiver={caregiver} events={events} />
       <ul className="flex flex-col">
         {recent.map((event) => (
@@ -76,9 +76,14 @@ function HandoffLine({ caregiver, events }: { caregiver: Caregiver; events: Baby
   const when = handoff.since ? `Desde tu último registro (${formatAgo(handoff.since)})` : 'En las últimas 12 h'
 
   return (
-    <p className="mb-1 border-b border-border px-1 pb-2.5 text-sm leading-snug text-muted-foreground">
+    <p className="mb-1 border-b border-border px-1 pt-1.5 pb-2.5 text-sm leading-snug text-muted-foreground">
       {when}, <span className="font-medium text-foreground">{caregiverName(handoff.by)}</span> registró:{' '}
-      <span className="text-foreground">{parts.join(' · ')}</span>
+      {parts.map((part, index) => (
+        <span key={index} className="whitespace-nowrap text-foreground">
+          {index > 0 ? ' · ' : ''}
+          {part}
+        </span>
+      ))}
     </p>
   )
 }
