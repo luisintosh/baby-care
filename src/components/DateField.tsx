@@ -28,6 +28,15 @@ export function DateField({ id = 'session-date', value, onChange }: DateFieldPro
         type="date"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        // Desktop browsers open the calendar only from the (hidden) icon; a
+        // click anywhere on the card should open it too.
+        onClick={(event) => {
+          try {
+            event.currentTarget.showPicker?.()
+          } catch {
+            // Already open, or the browser refuses outside a user gesture.
+          }
+        }}
         aria-label={chosen ? `Fecha, ${chosen}` : 'Elige la fecha'}
         className="absolute inset-0 size-full cursor-pointer opacity-0"
       />
