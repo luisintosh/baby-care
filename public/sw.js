@@ -1,4 +1,6 @@
-const CACHE_NAME = 'cuna-v3'
+// The build id placeholder below is replaced with the commit SHA at build time
+// so every deploy gets a fresh cache and installed apps drop the old files.
+const CACHE_NAME = 'cuna-__BUILD_ID__'
 
 self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting())
